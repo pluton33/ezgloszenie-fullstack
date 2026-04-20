@@ -1,0 +1,39 @@
+# --- Systemowe ---
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# --- IDE i Narzędzia ---
+.idea/
+**/.idea/
+.vscode/
+**/.vscode/
+*.swp
+*.swo
+*.iml
+
+# --- Node / Frontend ---
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+dist-electron/
+out/
+release/
+.vite/
+.eslintcache
+tsconfig.tsbuildinfo
+
+# --- Java / Gradle (Backend) ---
+.gradle/
+**/.gradle/
+build/
+**/build/
+bin/
+**/.factorypath
+
+# --- Logi i Sekrety ---
+*.log*
+.env
+.env.local
+.env.*.local
