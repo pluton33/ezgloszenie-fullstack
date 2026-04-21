@@ -1,4 +1,8 @@
-singleQuote: true
-semi: false
+semi: true
+tabWidth: 2
 printWidth: 100
-trailingComma: none
+trailingComma: 'all'
+endOfLine: 'auto'
+arrowParens: 'always'
+singleQuote: true
+jsxSingleQuote: false

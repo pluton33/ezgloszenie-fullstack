@@ -8,7 +8,8 @@ export default defineConfig({
   renderer: {
     resolve: {
       alias: {
-        '@renderer': resolve('src/renderer/src')
+        // '@' points directly to React files directory
+        '@': resolve('src/renderer/src')
       }
     },
     plugins: [react()]
