@@ -9,6 +9,7 @@ function createWindow(): void {
     width: 900,
     height: 670,
     show: false,
+    frame: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
@@ -51,6 +52,27 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
+
+  ipcMain.on('close-window', (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    if (win) win.close()
+  })
+
+  ipcMain.on('minimize-window', (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    if (win) win.minimize()
+  })
+
+  ipcMain.on('maximize-window', (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    if (win) {
+      if (win.isMaximized()) {
+        win.unmaximize()
+      } else {
+        win.maximize()
+      }
+    }
+  })
 
   createWindow()
 
