@@ -2,7 +2,7 @@ import '../assets/base.css';
 import React from 'react'
 import { useState } from 'react';
 import logoUrl from '../assets/policja-logo.svg'
-import { LightbulbIcon, LightbulbOffIcon } from 'lucide-react'
+import { SunIcon, MoonIcon, CircleUserRound, X, Minus, Square } from 'lucide-react'
 
 function Navbar(): React.JSX.Element {
     const [isDark, setIsDark] = useState(false);
@@ -19,16 +19,35 @@ function Navbar(): React.JSX.Element {
         }
     };
 
+    const closeWindow = (): void => {
+        window.electron.ipcRenderer.send('close-window');
+    }
+    const minimizeWindow = (): void => {
+        window.electron.ipcRenderer.send('minimize-window');
+    }
+    const maximizeWindow = (): void => {
+        window.electron.ipcRenderer.send('maximize-window');
+    }
+
     return (
-        <div className='topbar'>
-            {/* Logo policji */}
-            <img src={logoUrl} className='topbar-logo' alt="Logo" />
-            {/* Napis ezgloszenie */}
-            <span className="nazwa">e-Zgłoszenie</span>
-            {/* Przycisk i ikona zaurwki */}
-            <button onClick={toggleTheme} className="buttonzaruwka">
-                {isDark ? (<LightbulbOffIcon className='zaruwka' />) : (<LightbulbIcon className='zaruwka' />)}
-            </button>
+        <div>
+            <div className='topbar'>
+                {/* Logo policji */}
+                <div className='logo-strony'>
+                    <img src={logoUrl} className='topbar-logo' alt="Logo" />
+                    {/* Napis ezgloszenie */}
+                    <span className="nazwa">e-Zgłoszenie</span>
+                </div>
+                {/* Przycisk i ikona zaurwki */}
+                {/*<button onClick={toggleTheme} className="buttonzaruwka">
+                    {isDark ? (<SunIcon className='zaruwka' />) : (<MoonIcon className='zaruwka' />)}
+                </button>*/}
+                <div className="window-controls">
+                    <button id="minimize-btn" onClick={minimizeWindow} className='min-btn'><Minus size={18} /></button>
+                    <button id="maximize-btn" onClick={maximizeWindow} className='max-btn'><Square className='-textbtnsquare' size={14} /></button>
+                    <button id="close-btn" onClick={closeWindow} className="close-btn"><X size={18} /></button>
+                </div>
+            </div>
         </div>
     )
 
