@@ -13,7 +13,7 @@ public class OffenseController {
     private OffenseService service;
 
     @GetMapping("/offenses")
-    public OffensesResponse getOffenses(){
+    public OffensesResponse getOffenses() {
         return service.getOffenses();
     }
 
@@ -24,5 +24,13 @@ public class OffenseController {
 
     @PostMapping("addOffense")
     @ResponseStatus(HttpStatus.CREATED)
-    public Offense addOffense(@RequestBody Offense offense) { return service.addOffense(offense); }
+    public Offense addOffense(@RequestBody Offense offense) {
+        return service.addOffense(offense);
+    }
+
+    @PostMapping("editOffense")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Offense editOffense(@RequestBody Offense offense) {
+        return service.editOffense(offense);
+    }
 }

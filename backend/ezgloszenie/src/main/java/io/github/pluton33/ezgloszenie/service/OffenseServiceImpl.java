@@ -50,4 +50,23 @@ public class OffenseServiceImpl implements OffenseService {
                 savedEntity.getContent()
         );
     }
+
+    @Override
+    public Offense editOffense(Offense offense) {
+        if(offense.id() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID is required");
+        }
+
+        if(!offensesRepository.existsById(offense.id())){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Offense not found");
+        }
+        OffenseEntity offenseEntity = offense.toEntity();
+        OffenseEntity editedEntity = offensesRepository.save(offenseEntity);
+
+        return new Offense(
+                editedEntity.getId(),
+                editedEntity.getTitle(),
+                editedEntity.getContent()
+        );
+    }
 }
