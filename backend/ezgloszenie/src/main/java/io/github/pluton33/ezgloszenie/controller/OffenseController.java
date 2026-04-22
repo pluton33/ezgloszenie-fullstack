@@ -29,10 +29,10 @@ public class OffenseController {
         return service.addOffense(offense);
     }
 
-    @PostMapping("editOffense")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Offense editOffense(@RequestBody Offense offense) {
-        return service.editOffense(offense);
+    @PutMapping("offenses/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Offense editOffense(@PathVariable int id, @RequestBody Offense offense) {
+        return service.editOffense(id, offense);
     }
 
     @DeleteMapping("offenses/{id}")

@@ -52,15 +52,20 @@ public class OffenseServiceImpl implements OffenseService {
     }
 
     @Override
-    public Offense editOffense(Offense offense) {
+    public Offense editOffense(int id, Offense offense) {
         if(offense.id() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID is required");
+        }
+
+        if(id != offense.id()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID mismatch");
         }
 
         if(!offensesRepository.existsById(offense.id())){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Offense not found");
         }
         OffenseEntity offenseEntity = offense.toEntity();
+        offenseEntity.setId(id);
         OffenseEntity editedEntity = offensesRepository.save(offenseEntity);
 
         return new Offense(
@@ -71,7 +76,7 @@ public class OffenseServiceImpl implements OffenseService {
     }
 
     @Override
-    public void deleteOffense(Integer id) {
+    public void deleteOffense(int id) {
         if(!offensesRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Offense not found");
         }
