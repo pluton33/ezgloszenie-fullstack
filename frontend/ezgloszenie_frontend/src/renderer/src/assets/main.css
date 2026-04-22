@@ -1,41 +1,5 @@
 @import './base.css';
 
-@font-face {
-  font-family: 'Klint';
-  src: url('../assets/klint/Klint Medium.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-body {
-  overflow: hidden;
-  background-image: url('./wavy-lines.svg');
-  background-size: cover;
-  user-select: none;
-}
-
-code {
-  font-weight: 600;
-  padding: 3px 5px;
-  border-radius: 2px;
-  background-color: var(--color-background-mute);
-  font-family:
-    ui-monospace,
-    SFMono-Regular,
-    SF Mono,
-    Menlo,
-    Consolas,
-    Liberation Mono,
-    monospace;
-  font-size: 85%;
-}
-
-#root {
-  justify-content: center;
-  flex-direction: column;
-  margin-bottom: 80px;
-}
-
 .topbar {
   display: flex;
   flex-direction: row;
@@ -46,6 +10,8 @@ code {
   background-color: #002354;
   margin-top: 0px;
   color: white;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 .topbar-logo {
@@ -58,33 +24,50 @@ code {
 }
 
 .nazwa {
-  margin-left: 10px;
+  margin-left: 15px;
   font-size: 2rem;
-  font-weight: bold;
   letter-spacing: 1px;
   margin-bottom: 5px;
-  font-family: 'Klint';
-  
+  font-family: 'PT Sans';
+  font-weight: 600;
+  font-style: normal;
+  clip-path: inset(0 100% 0 0);
+  animation: odkryj 2s ease-in-out forwards;
+
+}
+
+@keyframes odkryj {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
 }
 
 .zaruwka {
-  color: white;
+
   width: 24px;
   height: auto;
   margin-right: 20px;
-  transition: color 0.13s ease;
+
 }
 
-.zaruwka:hover{
-  color:black;
-}
+
 
 .buttonzaruwka {
   background: none;
+  color: white;
   border: none;
   cursor: pointer;
   padding: 0;
   margin-left: auto;
+  transition: color 0.13s ease;
+}
+
+.buttonzaruwka:hover {
+  color: black;
 }
 
 @media (max-width: 720px) {
