@@ -1,4 +1,4 @@
-import Navbar from './components/Navbar.tsx'
+import Navbar from './components/Navbar'
 
 function App(): React.JSX.Element {
 
