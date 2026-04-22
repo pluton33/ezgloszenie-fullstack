@@ -1,3 +1,7 @@
-/gradlew text eol=lf
+# Reguły dla gradle w podfolderze backend
+backend/ezgloszenie/gradlew text eol=lf
+backend/ezgloszenie/gradlew.bat text eol=crlf
+
+# Ogólne reguły dla rozszerzeń w całym projekcie
 *.bat text eol=crlf
 *.jar binary
