@@ -11,6 +11,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.util.List;
@@ -68,7 +70,11 @@ public class OffenseServiceImplTest {
     public void shouldAddOffenseWithCorrectData() {
         Offense offense1 = new Offense(null, "title1", "content1");
 
-        when(repository.save(any(OffenseEntity.class))).thenAnswer(invocation -> invocation.getArguments()[0]);
+        when(repository.save(any(OffenseEntity.class))).thenAnswer(invocation -> {
+            OffenseEntity entity = invocation.getArgument(0);
+            entity.setId(123); // symulacja, że baza nadała ID 123
+            return entity;
+        });
 
         Offense savedOffense = service.addOffense(offense1);
 
@@ -85,5 +91,81 @@ public class OffenseServiceImplTest {
         assertEquals("content1", savedOffense.content());
 
         verify(repository, times(1)).save(any());
+    }
+
+    @Test
+    void shouldEditOffenseWithCorrectData() {
+        int idFromUrl = 1;
+        Offense dto = new Offense(1, "Updated Title", "Updated Content");
+
+        when(repository.existsById(idFromUrl)).thenReturn(true);
+        when(repository.save(any(OffenseEntity.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        Offense result = service.editOffense(idFromUrl, dto);
+
+        ArgumentCaptor<OffenseEntity> captor = ArgumentCaptor.forClass(OffenseEntity.class);
+        verify(repository).save(captor.capture());
+
+        OffenseEntity captured = captor.getValue();
+
+        assertEquals(idFromUrl, captured.getId());
+        assertEquals("Updated Title", captured.getTitle());
+        assertEquals("Updated Content", captured.getContent());
+
+        assertNotNull(result);
+        assertEquals("Updated Title", result.title());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenIdInBodyIsNull() {
+
+        int idFromUrl = 1;
+        Offense offenseWithNullId = new Offense(null, "title", "content");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            service.editOffense(idFromUrl, offenseWithNullId);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+
+        verifyNoInteractions(repository);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenIdsDoNotMatch() {
+
+        int idFromUrl = 1;
+        Offense offenseWithId99 = new Offense(99, "title", "content");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            service.editOffense(idFromUrl, offenseWithId99);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+
+        verifyNoInteractions(repository);
+    }
+
+    @Test
+    void shouldDeleteOffenseWhenExists() {
+        int idToDelete = 10;
+
+        when(repository.existsById(idToDelete)).thenReturn(true);
+        service.deleteOffense(idToDelete);
+
+        verify(repository, times(1)).deleteById(idToDelete);
+    }
+
+    @Test
+    void shouldThrowNotFoundWhenDeletingNonExistentOffense() {
+
+        int idToDelete = 10;
+        when(repository.existsById(idToDelete)).thenReturn(false);
+
+        assertThrows(ResponseStatusException.class, () -> {
+            service.deleteOffense(idToDelete);
+        });
+
+        verify(repository, never()).deleteById(anyInt());
     }
 }

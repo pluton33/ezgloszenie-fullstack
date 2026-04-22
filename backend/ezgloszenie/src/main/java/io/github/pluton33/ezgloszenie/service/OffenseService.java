@@ -7,4 +7,6 @@ public interface OffenseService {
     OffensesResponse getOffenses();
     Offense getOffenseById(int id);
     Offense addOffense(Offense offense);
+    Offense editOffense(int id, Offense offense);
+    void deleteOffense(int id);
 }
