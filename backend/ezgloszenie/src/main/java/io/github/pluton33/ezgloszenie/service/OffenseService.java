@@ -8,4 +8,5 @@ public interface OffenseService {
     Offense getOffenseById(int id);
     Offense addOffense(Offense offense);
     Offense editOffense(Offense offense);
+    void deleteOffense(Integer id);
 }

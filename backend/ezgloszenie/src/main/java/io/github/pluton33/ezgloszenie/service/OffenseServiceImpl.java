@@ -69,4 +69,12 @@ public class OffenseServiceImpl implements OffenseService {
                 editedEntity.getContent()
         );
     }
+
+    @Override
+    public void deleteOffense(Integer id) {
+        if(!offensesRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Offense not found");
+        }
+        offensesRepository.deleteById(id);
+    }
 }

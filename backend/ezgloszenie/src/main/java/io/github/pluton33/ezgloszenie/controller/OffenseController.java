@@ -5,6 +5,7 @@ import io.github.pluton33.ezgloszenie.data.OffensesResponse;
 import io.github.pluton33.ezgloszenie.service.OffenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,5 +33,11 @@ public class OffenseController {
     @ResponseStatus(HttpStatus.CREATED)
     public Offense editOffense(@RequestBody Offense offense) {
         return service.editOffense(offense);
+    }
+
+    @DeleteMapping("offenses/{id}")
+    public ResponseEntity<Void> deleteOffense(@PathVariable int id) {
+        service.deleteOffense(id);
+        return ResponseEntity.noContent().build();
     }
 }
