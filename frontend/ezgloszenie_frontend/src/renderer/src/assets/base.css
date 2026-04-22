@@ -13,11 +13,13 @@ ul {
 /*JASNY MOTYW*/
 :root {
   --bg-color: #ffffff;
+  --input-color: #e0e0e0;
 }
 
 /*CIEMNY MOTYW*/
 [data-theme="dark"] {
   --bg-color: #1e1e29;
+  --input-color: #383e58;
 }
 
 

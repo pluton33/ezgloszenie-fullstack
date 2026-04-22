@@ -126,22 +126,63 @@
   background-color: #a11414;
 }
 
-@media (max-width: 720px) {
-  .text {
-    font-size: 20px;
-  }
+.login-content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
 }
 
-@media (max-width: 620px) {
-  .versions {
-    display: none;
-  }
+.login-text {
+  display: flex;
+  background-color: var(--input-color);
+  height: 30px;
+  border-radius: 10px;
 }
 
-@media (max-width: 350px) {
+.login-text-input {
+  height: 30px;
+  color: black;
+  background: none;
+  background-color: var(--input-color);
+  border: none;
+  border-radius: 10px;
+  width: 200px;
+  outline: none;
+  font-family: 'PT Sans';
+}
 
-  .tip,
-  .actions {
-    display: none;
-  }
+.login-icon {
+  margin-left: 7px;
+  margin-right: 7px;
+  margin-top: 7px;
+}
+
+.login-btn {
+  border: none;
+  background-color: #002354;
+  margin-top: 30px;
+  height: 30px;
+  width: 230px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-btn-text {
+  color: #e0e0e0;
+  font-family: 'PT Sans';
+  font-weight: 600;
+
+}
+
+.login-btn:hover {
+  background-color: #274672;
+}
+
+.key-icon {
+  color: #e0e0e0;
+  margin-left: 7px;
+  margin-top: 1px;
 }
