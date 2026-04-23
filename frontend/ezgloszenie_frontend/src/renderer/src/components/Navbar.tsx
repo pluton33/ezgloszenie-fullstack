@@ -42,6 +42,10 @@ function Navbar(): React.JSX.Element {
                 {/*<button onClick={toggleTheme} className="buttonzaruwka">
                     {isDark ? (<SunIcon className='zaruwka' />) : (<MoonIcon className='zaruwka' />)}
                 </button>*/}
+                <button className="profile-btn">
+                    <CircleUserRound size={40} strokeWidth={1.5} />
+                </button>
+
                 <div className="window-controls">
                     <button id="minimize-btn" onClick={minimizeWindow} className='min-btn'><Minus size={18} /></button>
                     <button id="maximize-btn" onClick={maximizeWindow} className='max-btn'><Square className='-textbtnsquare' size={14} /></button>
