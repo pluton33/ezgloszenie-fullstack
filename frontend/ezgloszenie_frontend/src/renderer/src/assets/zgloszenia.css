@@ -1,0 +1,61 @@
+.zgl-body {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    font-family: "PT Sans";
+}
+
+.zgl-panel1 {
+    background-color: white;
+    width: 63%;
+    margin-right: 10px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.zgl-panel2 {
+    background-color: white;
+    width: 37%;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.zgl-przyciski {
+    display: flex;
+    flex-direction: column;
+}
+
+.zgl-przyciski2 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.zgl-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 150px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #e0e0e0;
+    font-family: "PT Sans";
+    font-weight: 600;
+    transition: background-color 0.13s ease;
+}
+
+.zgl-btn:hover {
+    background-color: #b0b0b1;
+
+}
+
+.btn-name {
+    font-family: "PT Sans";
+    font-weight: 600;
+    margin-top: 5px;
+}

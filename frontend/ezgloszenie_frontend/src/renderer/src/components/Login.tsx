@@ -19,7 +19,7 @@ function Login(): React.JSX.Element {
                 <input type='password' className='login-text-input' name="password" />
             </div>
 
-            <button className='login-btn' style={{ marginTop: '30px' }}>
+            <button className='login-btn' onClick={() => navigate('/home')} style={{ marginTop: '30px' }} >
                 <span className='login-btn-text'>Zaloguj Się</span>
                 <SquareArrowRightEnter className='key-icon' size={16} />
             </button>
