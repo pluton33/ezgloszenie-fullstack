@@ -1,7 +1,10 @@
 import React from "react";
 import { LockIcon, MailIcon, SquareArrowRightEnter } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 function Register(): React.JSX.Element {
+    const navigate = useNavigate();
+
     return (
         <div className='login-content'>
             <label className='login-text-label' htmlFor="username">Adres e-mail:</label>
@@ -32,7 +35,7 @@ function Register(): React.JSX.Element {
                 <hr className='login-hr' />
             </div>
 
-            <button className='login-btn' style={{ marginTop: '18px' }}>
+            <button className='login-btn' style={{ marginTop: '18px' }} onClick={() => navigate('/login')}>
                 <span className='login-btn-text'> Zaloguj się</span>
                 <SquareArrowRightEnter className='key-icon' size={16} />
             </button>

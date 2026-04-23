@@ -1,8 +1,9 @@
 import React from 'react'
 import { LockIcon, MailIcon, SquareArrowRightEnter } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 function Login(): React.JSX.Element {
-
+    const navigate = useNavigate();
 
 
     return (
@@ -29,7 +30,7 @@ function Login(): React.JSX.Element {
                 <hr className='login-hr' />
             </div>
 
-            <button className='login-btn' style={{ marginTop: '18px' }}>
+            <button className='login-btn' style={{ marginTop: '18px' }} onClick={() => navigate('/register')}>
                 <span className='login-btn-text'>Załóż konto</span>
                 <SquareArrowRightEnter className='key-icon' size={16} />
             </button>
