@@ -1,6 +1,6 @@
 import React from 'react';
 import { ClipboardList, BookOpen, ShieldAlert } from 'lucide-react';
-import '../assets/base.css';
+import '../assets/hero.css';
 
 function Hero() {
     return (
