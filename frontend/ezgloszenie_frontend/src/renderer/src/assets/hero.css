@@ -1,0 +1,103 @@
+.main-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 80px); 
+  background-color: white;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.hero-welcome {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.hero-welcome h1 {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 2.2rem;
+  color: #002354;
+  margin: 0 0 10px 0;
+  font-weight: bold;
+}
+
+.hero-welcome p {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 1.1rem;
+  color: #555;
+  margin: 0;
+}
+
+.action-cards-container {
+  display: flex;
+  flex-direction: row; 
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
+  max-width: 950px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.action-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+  width: 270px;
+  font-family: 'PT Sans', sans-serif;
+}
+
+.action-card:active {
+  transform: scale(0.98); 
+}
+
+.action-card:hover {
+  opacity: 0.9;
+}
+
+.action-card.primary {
+  background-color: #002354;
+  color: white;
+}
+
+.action-card.primary .card-icon {
+  color: white;
+  margin-bottom: 15px;
+}
+
+.action-card.secondary {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.action-card.secondary .card-icon {
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.action-card h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+}
+
+.action-card p {
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
