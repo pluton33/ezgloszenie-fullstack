@@ -131,9 +131,11 @@
   align-items: center;
   flex-direction: column;
   width: 100%;
+  margin-top: 15vw;
 }
 
 .login-text {
+  margin-top: 5px;
   display: flex;
   background-color: var(--input-color);
   height: 30px;
@@ -152,6 +154,11 @@
   font-family: 'PT Sans';
 }
 
+.login-text-label {
+  font-size: 80%;
+  font-weight: 800;
+}
+
 .login-icon {
   margin-left: 7px;
   margin-right: 7px;
@@ -161,7 +168,6 @@
 .login-btn {
   border: none;
   background-color: #002354;
-  margin-top: 30px;
   height: 30px;
   width: 230px;
   border-radius: 10px;
@@ -179,6 +185,25 @@
 
 .login-btn:hover {
   background-color: #274672;
+}
+
+.login-lub {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 230px;
+}
+
+.login-hr {
+  flex: 1;
+  width: 60px;
+  border: none;
+  border-top: 1px solid black;
+
+}
+
+.login-lub .login-text-label {
+  margin: 0 10px;
 }
 
 .key-icon {
