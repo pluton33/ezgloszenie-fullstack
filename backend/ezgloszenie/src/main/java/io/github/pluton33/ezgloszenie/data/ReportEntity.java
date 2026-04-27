@@ -6,8 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-@Entity(name = "offenses")
-public class OffenseEntity {
+@Entity(name = "reports")
+public class ReportEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private @Nullable Integer id;
