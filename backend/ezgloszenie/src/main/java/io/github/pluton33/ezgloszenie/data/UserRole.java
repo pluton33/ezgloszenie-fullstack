@@ -1,6 +1,6 @@
 package io.github.pluton33.ezgloszenie.data;
 
-enum UserRole {
+public enum UserRole {
     USER,
     MODERATOR,
     ADMIN
