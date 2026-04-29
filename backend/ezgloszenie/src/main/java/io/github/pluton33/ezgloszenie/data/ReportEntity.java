@@ -1,21 +1,22 @@
 package io.github.pluton33.ezgloszenie.data;
 
 import jakarta.annotation.Nullable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity(name = "reports")
 public class ReportEntity {
+    public ReportEntity() {}
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private @Nullable Integer id;
+    private @Nullable Long id;
     private String title;
-    private String content;
+    private String description;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 
     @Nullable
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -23,11 +24,15 @@ public class ReportEntity {
         return title;
     }
 
-    public String getContent() {
-        return content;
+    public String getDescription() {
+        return description;
     }
 
-    public void setId(@Nullable Integer id) {
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setId(@Nullable Long id) {
         this.id = id;
     }
 
@@ -35,7 +40,11 @@ public class ReportEntity {
         this.title = title;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 }

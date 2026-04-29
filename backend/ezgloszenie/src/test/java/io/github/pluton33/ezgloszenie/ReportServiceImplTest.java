@@ -84,18 +84,18 @@ public class ReportServiceImplTest {
         ReportEntity capturedInDatabase = captor.getValue();
 
         assertEquals("title1", capturedInDatabase.getTitle());
-        assertEquals("content1", capturedInDatabase.getContent());
+        assertEquals("content1", capturedInDatabase.getDescription());
 
         assertNotNull(savedReport);
         assertEquals("title1", savedReport.title());
-        assertEquals("content1", savedReport.content());
+        assertEquals("content1", savedReport.description());
 
         verify(repository, times(1)).save(any());
     }
 
     @Test
     void shouldEditReportWithCorrectData() {
-        int idFromUrl = 1;
+        long idFromUrl = 1;
         Report dto = new Report(1, "Updated Title", "Updated Content");
 
         when(repository.existsById(idFromUrl)).thenReturn(true);
@@ -110,7 +110,7 @@ public class ReportServiceImplTest {
 
         assertEquals(idFromUrl, captured.getId());
         assertEquals("Updated Title", captured.getTitle());
-        assertEquals("Updated Content", captured.getContent());
+        assertEquals("Updated Content", captured.getDescription());
 
         assertNotNull(result);
         assertEquals("Updated Title", result.title());
@@ -119,8 +119,8 @@ public class ReportServiceImplTest {
     @Test
     void shouldThrowExceptionWhenIdInBodyIsNull() {
 
-        int idFromUrl = 1;
-        Report reportWithNullId = new Report(null, "title", "content");
+        long idFromUrl = 1;
+        Report reportWithNullId = new Report(null, "title", "description");
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             service.editReport(idFromUrl, reportWithNullId);
@@ -134,8 +134,8 @@ public class ReportServiceImplTest {
     @Test
     void shouldThrowExceptionWhenIdsDoNotMatch() {
 
-        int idFromUrl = 1;
-        Report reportWithId99 = new Report(99, "title", "content");
+        long idFromUrl = 1;
+        Report reportWithId99 = new Report(99, "title", "description");
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             service.editReport(idFromUrl, reportWithId99);
@@ -148,7 +148,7 @@ public class ReportServiceImplTest {
 
     @Test
     void shouldDeleteReportWhenExists() {
-        int idToDelete = 10;
+        long idToDelete = 10;
 
         when(repository.existsById(idToDelete)).thenReturn(true);
         service.deleteReport(idToDelete);
@@ -159,7 +159,7 @@ public class ReportServiceImplTest {
     @Test
     void shouldThrowNotFoundWhenDeletingNonExistentReport() {
 
-        int idToDelete = 10;
+        long idToDelete = 10;
         when(repository.existsById(idToDelete)).thenReturn(false);
 
         assertThrows(ResponseStatusException.class, () -> {
