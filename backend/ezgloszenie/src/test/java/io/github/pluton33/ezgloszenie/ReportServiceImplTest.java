@@ -84,11 +84,11 @@ public class ReportServiceImplTest {
         ReportEntity capturedInDatabase = captor.getValue();
 
         assertEquals("title1", capturedInDatabase.getTitle());
-        assertEquals("content1", capturedInDatabase.getContent());
+        assertEquals("content1", capturedInDatabase.getDescription());
 
         assertNotNull(savedReport);
         assertEquals("title1", savedReport.title());
-        assertEquals("content1", savedReport.content());
+        assertEquals("content1", savedReport.description());
 
         verify(repository, times(1)).save(any());
     }
@@ -110,7 +110,7 @@ public class ReportServiceImplTest {
 
         assertEquals(idFromUrl, captured.getId());
         assertEquals("Updated Title", captured.getTitle());
-        assertEquals("Updated Content", captured.getContent());
+        assertEquals("Updated Content", captured.getDescription());
 
         assertNotNull(result);
         assertEquals("Updated Title", result.title());
@@ -120,7 +120,7 @@ public class ReportServiceImplTest {
     void shouldThrowExceptionWhenIdInBodyIsNull() {
 
         int idFromUrl = 1;
-        Report reportWithNullId = new Report(null, "title", "content");
+        Report reportWithNullId = new Report(null, "title", "description");
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             service.editReport(idFromUrl, reportWithNullId);
@@ -135,7 +135,7 @@ public class ReportServiceImplTest {
     void shouldThrowExceptionWhenIdsDoNotMatch() {
 
         int idFromUrl = 1;
-        Report reportWithId99 = new Report(99, "title", "content");
+        Report reportWithId99 = new Report(99, "title", "description");
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             service.editReport(idFromUrl, reportWithId99);

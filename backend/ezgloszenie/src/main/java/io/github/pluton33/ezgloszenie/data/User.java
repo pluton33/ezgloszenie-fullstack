@@ -10,10 +10,8 @@ public record User(
         @Nullable Integer  id,
         UserRole role,
         String email,
-        String passwordHash,
         Integer badgeNumber,
         String firstName,
-        String lastName,
-        LocalDate createdAt
+        String lastName
 ) {
 }
