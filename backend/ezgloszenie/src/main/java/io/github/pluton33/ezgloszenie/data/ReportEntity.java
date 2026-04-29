@@ -8,7 +8,7 @@ public class ReportEntity {
     public ReportEntity() {}
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private @Nullable Integer id;
+    private @Nullable Long id;
     private String title;
     private String description;
     @ManyToOne
@@ -16,7 +16,7 @@ public class ReportEntity {
     private UserEntity user;
 
     @Nullable
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -32,7 +32,7 @@ public class ReportEntity {
         return user;
     }
 
-    public void setId(@Nullable Integer id) {
+    public void setId(@Nullable Long id) {
         this.id = id;
     }
 

@@ -24,7 +24,7 @@ public class ReportController {
     }
 
     @GetMapping("reports/{id}")
-    public Report getReportById(@PathVariable int id) {
+    public Report getReportById(@PathVariable long id) {
         return service.getReportById(id);
     }
 
@@ -39,14 +39,14 @@ public class ReportController {
     @PutMapping("reports/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    public Report editReport(@PathVariable int id, @RequestBody Report report, @AuthenticationPrincipal UserDetails user) {
+    public Report editReport(@PathVariable long id, @RequestBody Report report, @AuthenticationPrincipal UserDetails user) {
         String email = user.getUsername();
         return service.editReport(id, report, email);
     }
 
     @DeleteMapping("reports/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Void> deleteReport(@PathVariable int id, @AuthenticationPrincipal UserDetails user) {
+    public ResponseEntity<Void> deleteReport(@PathVariable long id, @AuthenticationPrincipal UserDetails user) {
         String email = user.getUsername();
         service.deleteReport(id, email);
         return ResponseEntity.noContent().build();

@@ -30,6 +30,11 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) //TYLKO DO TESTOWANIA
                 .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers(
+//                                "/v3/api-docs/**",    //żeby swagger działał w przeglądarce
+//                                "/swagger-ui/**",
+//                                "/swagger-ui.html"
+//                        )
                         .anyRequest()
                         .permitAll())
                 .exceptionHandling(exception -> exception

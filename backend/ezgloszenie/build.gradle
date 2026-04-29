@@ -28,7 +28,11 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.6.3'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 
+	//security
 	implementation "org.springframework.boot:spring-boot-starter-security"
+
+	//swagger
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0'
 
 	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
 	runtimeOnly 'org.postgresql:postgresql'

@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 
 public record User(
-        @Nullable Integer  id,
+        @Nullable Long  id,
         UserRole role,
         String email,
         Integer badgeNumber,

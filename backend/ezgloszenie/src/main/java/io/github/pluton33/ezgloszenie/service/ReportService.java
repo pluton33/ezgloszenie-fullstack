@@ -5,8 +5,8 @@ import io.github.pluton33.ezgloszenie.data.ReportsResponse;
 
 public interface ReportService {
     ReportsResponse getReports();
-    Report getReportById(int id);
+    Report getReportById(long id);
     Report addReport(Report report, String email);
-    Report editReport(int id, Report report, String email);
-    void deleteReport(int id, String email);
+    Report editReport(long id, Report report, String email);
+    void deleteReport(long id, String email);
 }

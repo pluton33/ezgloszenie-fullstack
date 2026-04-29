@@ -95,7 +95,7 @@ public class ReportServiceImplTest {
 
     @Test
     void shouldEditReportWithCorrectData() {
-        int idFromUrl = 1;
+        long idFromUrl = 1;
         Report dto = new Report(1, "Updated Title", "Updated Content");
 
         when(repository.existsById(idFromUrl)).thenReturn(true);
@@ -119,7 +119,7 @@ public class ReportServiceImplTest {
     @Test
     void shouldThrowExceptionWhenIdInBodyIsNull() {
 
-        int idFromUrl = 1;
+        long idFromUrl = 1;
         Report reportWithNullId = new Report(null, "title", "description");
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
@@ -134,7 +134,7 @@ public class ReportServiceImplTest {
     @Test
     void shouldThrowExceptionWhenIdsDoNotMatch() {
 
-        int idFromUrl = 1;
+        long idFromUrl = 1;
         Report reportWithId99 = new Report(99, "title", "description");
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
@@ -148,7 +148,7 @@ public class ReportServiceImplTest {
 
     @Test
     void shouldDeleteReportWhenExists() {
-        int idToDelete = 10;
+        long idToDelete = 10;
 
         when(repository.existsById(idToDelete)).thenReturn(true);
         service.deleteReport(idToDelete);
@@ -159,7 +159,7 @@ public class ReportServiceImplTest {
     @Test
     void shouldThrowNotFoundWhenDeletingNonExistentReport() {
 
-        int idToDelete = 10;
+        long idToDelete = 10;
         when(repository.existsById(idToDelete)).thenReturn(false);
 
         assertThrows(ResponseStatusException.class, () -> {

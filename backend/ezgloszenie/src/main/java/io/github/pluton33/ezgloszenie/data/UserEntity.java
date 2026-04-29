@@ -12,7 +12,7 @@ public class UserEntity {
     public UserEntity(){}
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private @Nullable Integer id;
+    private @Nullable Long id;
     @Enumerated(EnumType.STRING)
     private UserRole role;
     @Column(nullable = false, unique = true)
@@ -26,7 +26,7 @@ public class UserEntity {
     private LocalDate createdAt;
 
     @Nullable
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

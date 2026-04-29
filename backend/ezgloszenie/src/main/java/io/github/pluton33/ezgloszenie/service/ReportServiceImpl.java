@@ -31,7 +31,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Report getReportById(int id) {
+    public Report getReportById(long id) {
         return reportsRepository
                 .findById(id)
                 .map(entity -> reportMapper.toDto(entity))
@@ -52,7 +52,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Report editReport(int id, Report report, String email) {
+    public Report editReport(long id, Report report, String email) {
         if (report.id() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID is required");
         }
@@ -76,7 +76,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public void deleteReport(int id, String email) {
+    public void deleteReport(long id, String email) {
         if (!reportsRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Report not found");
         }
