@@ -3,7 +3,8 @@ package io.github.pluton33.ezgloszenie.data;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Enumerated;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public record User(
         @Nullable Integer  id,
@@ -13,6 +14,6 @@ public record User(
         Integer badgeNumber,
         String firstName,
         String lastName,
-        Date createdAt
+        LocalDate createdAt
 ) {
 }
