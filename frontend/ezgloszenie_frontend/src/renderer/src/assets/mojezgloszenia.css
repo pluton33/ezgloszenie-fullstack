@@ -1,0 +1,167 @@
+/* Kontener główny */
+.zgloszenia-container {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #1f2937;
+}
+
+/* Nagłówek */
+.zgloszenia-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 30px;
+}
+
+.zgloszenia-title {
+  font-size: 2.2rem;
+  color: #002354;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.zgloszenia-subtitle {
+  color: #6b7280;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Przycisk odświeżania */
+.btn-refresh {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #002354;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-refresh:hover:not(:disabled) {
+  background-color: #003377;
+}
+
+.btn-refresh:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.icon-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* Error box */
+.error-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #fef2f2;
+  border-left: 4px solid #ef4444;
+  padding: 16px;
+  border-radius: 0 8px 8px 0;
+  color: #b91c1c;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+/* Tabela */
+.table-wrapper {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.zgloszenia-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.zgloszenia-table th, 
+.zgloszenia-table td {
+  padding: 20px 24px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.zgloszenia-table th {
+  background-color: #f9fafb;
+  color: #374151;
+  font-weight: 700;
+}
+
+.table-row:hover {
+  background-color: #f9fafb;
+  transition: background-color 0.2s;
+}
+
+/* Teksty i kolory w tabeli */
+.font-bold { font-weight: 700; }
+.font-medium { font-weight: 500; }
+.text-blue { color: #002354; }
+.text-center { text-align: center; }
+
+.truncate-text {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #6b7280;
+}
+
+/* Użytkownik */
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.user-badge {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+/* Przyciski akcji */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn-action {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.btn-action.view:hover { color: #002354; }
+.btn-action.delete:hover { color: #ef4444; }
+
+/* Stany puste i ładowanie */
+.table-message {
+  padding: 60px !important;
+  text-align: center;
+  color: #6b7280;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
