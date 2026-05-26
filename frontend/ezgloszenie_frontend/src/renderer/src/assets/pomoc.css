@@ -1,0 +1,176 @@
+/* Kontener główny */
+.pomoc-container {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #1f2937;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Nagłówek */
+.pomoc-header {
+  margin-bottom: 40px;
+}
+
+.pomoc-title {
+  font-size: 2.2rem;
+  color: #002354;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.pomoc-subtitle {
+  color: #6b7280;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Układ dwukolumnowy (FAQ po lewej, Kontakt po prawej) */
+.pomoc-content {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* Sekcja Bazy Wiedzy */
+.faq-section {
+  flex: 2; /* Zajmuje więcej miejsca */
+}
+
+.section-title {
+  font-size: 1.4rem;
+  color: #002354;
+  margin-top: 0;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 10px;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.faq-item {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  transition: border-color 0.2s;
+}
+
+.faq-item.active {
+  border-color: #002354;
+  box-shadow: 0 4px 12px rgba(0, 35, 84, 0.08);
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 18px 20px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.faq-question:hover {
+  background-color: #f9fafb;
+}
+
+.faq-question-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.faq-icon {
+  color: #002354;
+  display: flex;
+}
+
+.faq-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.faq-chevron {
+  color: #9ca3af;
+  display: flex;
+}
+
+.faq-answer {
+  padding: 0 20px 20px 55px; /* Odstęp z lewej, żeby zrównać z tekstem pytania */
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Karta kontaktu technicznego */
+.contact-section {
+  flex: 1; /* Zajmuje mniej miejsca */
+}
+
+.contact-card {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+}
+
+.contact-icon-wrapper {
+  background-color: #002354;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px auto;
+}
+
+.contact-card h3 {
+  color: #002354;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.contact-card p {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.contact-details {
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+  line-height: 1.8;
+  color: #334155;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.contact-warning {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  background-color: #f1f5f9;
+  padding: 10px;
+  border-radius: 6px;
+}
