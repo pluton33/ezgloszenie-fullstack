@@ -18,9 +18,8 @@ public class UserEntity {
     @Column(nullable = false, unique = true)
     private String email;
     private String passwordHash;
-//    private Institution
+    //    private Institution
     @Nullable
-    private Integer badgeNumber;
     private String firstName;
     private String lastName;
     private LocalDate createdAt;
@@ -42,11 +41,6 @@ public class UserEntity {
         return passwordHash;
     }
 
-    @Nullable
-    public Integer getBadgeNumber() {
-        return badgeNumber;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -65,10 +59,6 @@ public class UserEntity {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setBadgeNumber(@Nullable Integer badgeNumber) {
-        this.badgeNumber = badgeNumber;
     }
 
     public void setCreatedAt(LocalDate createdAt) {
@@ -94,7 +84,6 @@ public class UserEntity {
                 ", role=" + role +
                 ", email='" + email + '\'' +
                 ", passwordHash='" + passwordHash + '\'' +
-                ", badgeNumber=" + badgeNumber +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", createdAt=" + createdAt +
