@@ -10,7 +10,6 @@ public record User(
         @Nullable Long  id,
         UserRole role,
         String email,
-        Integer badgeNumber,
         String firstName,
         String lastName
 ) {
