@@ -335,3 +335,53 @@
   margin-left: 7px;
   margin-top: 1px;
 }
+
+.nz-kat-icon {
+  margin-bottom: 10px;
+  stroke-width: 2;
+}
+
+/* GLOBAL THEME HELPERS */
+.topbar,
+.topbar *,
+.profile-dropdown,
+.dropdown-item,
+.window-controls button,
+.login-text,
+.login-text-input,
+.login-btn,
+.login-btn-text,
+.main-panel,
+.hero-welcome h1,
+.hero-welcome p,
+.action-card,
+.pomoc-container,
+.faq-item,
+.faq-question,
+.contact-card,
+.contact-details,
+.contact-warning,
+.zgloszenia-container,
+.table-wrapper,
+.zgloszenia-table th,
+.zgloszenia-table td,
+.table-row,
+.error-box,
+.nz-page,
+.nz-field input,
+.nz-field textarea,
+.nz-input-inline,
+.nz-infobox,
+.nz-sum-card,
+.nz-info-kafelek,
+.nz-kat-card {
+  transition: var(--theme-transition);
+}
+
+[data-theme="dark"] .login-text-input {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .login-hr {
+  border-top-color: var(--border-color);
+}
