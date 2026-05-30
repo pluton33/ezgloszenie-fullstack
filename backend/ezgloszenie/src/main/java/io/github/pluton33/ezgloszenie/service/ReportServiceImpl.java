@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -46,6 +47,7 @@ public class ReportServiceImpl implements ReportService {
         ReportEntity reportEntity = reportMapper.toEntity(report);
         reportEntity.setId(null);
         reportEntity.setUser(loggedUser);
+        reportEntity.setCreated_date(LocalDateTime.now());
         ReportEntity savedEntity = reportsRepository.save(reportEntity);
 
         return reportMapper.toDto(savedEntity);

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.pluton33.ezgloszenie.controller.ReportController;
 import io.github.pluton33.ezgloszenie.data.Report;
 import io.github.pluton33.ezgloszenie.data.ReportsResponse;
+import io.github.pluton33.ezgloszenie.data.User;
+import io.github.pluton33.ezgloszenie.data.UserRole;
 import io.github.pluton33.ezgloszenie.service.ReportService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +34,10 @@ public class ReportControllerTests {
 
     @Test
     void shouldReturnAllReports() throws Exception {
+        User user = new User(0L, UserRole.USER, "k.nowak@gmail.com", "Kamil", "Nowak");
         List<Report> list = List.of(
-                new Report(1, "report1", "content1"),
-                new Report(2, "report2", "content2")
+                new Report(1L, "report1", "content1", user),
+                new Report(2L, "report2", "content2", user)
         );
         ReportsResponse fakeResponse = new ReportsResponse(list);
         when(reportService.getReports()).thenReturn(fakeResponse);
@@ -45,9 +48,10 @@ public class ReportControllerTests {
 
     @Test
     void shouldReturnReportById() throws Exception {
+        User user = new User(0L, UserRole.USER, "k.nowak@gmail.com", "Kamil", "Nowak");
         List<Report> list = List.of(
-                new Report(1, "report1", "content1"),
-                new Report(2, "report2", "content2")
+                new Report(1L, "report1", "content1", user),
+                new Report(2L, "report2", "content2", user)
         );
         when(reportService.getReportById(2)).thenReturn(list.get(1));
         mockMvc.perform(get("/reports/2"))
@@ -57,10 +61,11 @@ public class ReportControllerTests {
 
     @Test
     void shouldAddReport() throws Exception {
-        Report report = new Report(null, "title1", "content1");
-        Report returnedReport = new Report(1, "title1", "content1");
+        User user = new User(0L, UserRole.USER, "k.nowak@gmail.com", "Kamil", "Nowak");
+        Report report = new Report(null, "title1", "content1", user);
+        Report returnedReport = new Report(1L, "title1", "content1", user);
 
-        when(reportService.addReport(any(Report.class))).thenReturn(returnedReport);
+        when(reportService.addReport(any(Report.class), eq("k.nowak@gmail.com"))).thenReturn(returnedReport);
         mockMvc.perform(post("/addReport")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(report)))
@@ -70,10 +75,11 @@ public class ReportControllerTests {
 
     @Test
     void shouldEditReport() throws Exception {
-        Report report = new Report(1, "title1", "content1");
-        Report returnedReport = new Report(1, "title1", "content1");
+        User user = new User(0L, UserRole.USER, "k.nowak@gmail.com", "Kamil", "Nowak");
+        Report report = new Report(1L, "title1", "content1", user);
+        Report returnedReport = new Report(1L, "title1", "content1", user);
 
-        when(reportService.editReport(anyInt(), any(Report.class))).thenReturn(returnedReport);
+        when(reportService.editReport(anyInt(), any(Report.class), eq("k.nowak@gmail.com"))).thenReturn(returnedReport);
         mockMvc.perform(put("/reports/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(report)))

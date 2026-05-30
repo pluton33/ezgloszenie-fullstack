@@ -3,6 +3,8 @@ package io.github.pluton33.ezgloszenie.data;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity(name = "reports")
 public class ReportEntity {
     public ReportEntity() {}
@@ -11,6 +13,7 @@ public class ReportEntity {
     private @Nullable Long id;
     private String title;
     private String description;
+    private LocalDateTime created_date;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
@@ -28,6 +31,10 @@ public class ReportEntity {
         return description;
     }
 
+    public LocalDateTime getCreated_date() {
+        return created_date;
+    }
+
     public UserEntity getUser() {
         return user;
     }
@@ -42,6 +49,10 @@ public class ReportEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setCreated_date(LocalDateTime created_date) {
+        this.created_date = created_date;
     }
 
     public void setUser(UserEntity user) {
