@@ -1,7 +1,7 @@
 package io.github.pluton33.ezgloszenie.service;
 
 import io.github.pluton33.ezgloszenie.data.*;
-import io.github.pluton33.ezgloszenie.repository.Report_status_historyRepository;
+import io.github.pluton33.ezgloszenie.repository.ReportStatusHistoryRepository;
 import io.github.pluton33.ezgloszenie.repository.ReportsRepository;
 import io.github.pluton33.ezgloszenie.repository.StatusRepository;
 import org.springframework.http.HttpStatus;
@@ -14,11 +14,11 @@ import java.util.List;
 
 @Service
 public class StatusServiceImpl implements StatusService {
-    private final Report_status_historyRepository reportStatusHistoryRepository;
+    private final ReportStatusHistoryRepository reportStatusHistoryRepository;
     private final StatusRepository statusRepository;
     private final ReportsRepository reportsRepository;
 
-    public StatusServiceImpl(Report_status_historyRepository reportStatusHistoryRepository,
+    public StatusServiceImpl(ReportStatusHistoryRepository reportStatusHistoryRepository,
                              StatusRepository statusRepository, ReportsRepository reportsRepository) {
         this.reportStatusHistoryRepository = reportStatusHistoryRepository;
         this.statusRepository = statusRepository;
@@ -26,11 +26,11 @@ public class StatusServiceImpl implements StatusService {
     }
 
     @Override
-    public StatusResponse getStatusReport(Long id) {
-        List<Report_status_historyEntity> reportStatusHistoryEntityList = reportStatusHistoryRepository.
-                findByReport_Id(id);
+    public StatusResponse getStatusReport(Long reportId) {
+        List<ReportStatusHistoryEntity> reportStatusHistoryEntityList = reportStatusHistoryRepository.
+                findByReportId(reportId);
         List<Status> statuses = new ArrayList<>();
-        for(Report_status_historyEntity reportStatusHistory: reportStatusHistoryEntityList) {
+        for(ReportStatusHistoryEntity reportStatusHistory: reportStatusHistoryEntityList) {
             StatusEntity statusEntity = statusRepository.findById(reportStatusHistory.getStatus().getId()).
                     orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Report does not have status"));
             Status status = new Status(statusEntity.getId(), statusEntity.getName(),reportStatusHistory.getValid_from(),
@@ -44,11 +44,11 @@ public class StatusServiceImpl implements StatusService {
     public void updateStatus(Long report_id, String name) {
         ReportEntity reportEntity = reportsRepository.findById(report_id).
                 orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Report not found"));
-        Report_status_historyEntity reportStatusHistoryEntity = reportStatusHistoryRepository.
-                findByReportId(report_id).getFirst();
+        ReportStatusHistoryEntity reportStatusHistoryEntity = reportStatusHistoryRepository.
+                findByReportIdAndValidToIsNull(report_id).getFirst();
         reportStatusHistoryEntity.setValid_to(LocalDateTime.now());
         StatusEntity statusEntity = new StatusEntity(name);
         StatusEntity newStatus = statusRepository.save(statusEntity);
-        reportStatusHistoryRepository.save(new Report_status_historyEntity(reportEntity, newStatus));
+        reportStatusHistoryRepository.save(new ReportStatusHistoryEntity(reportEntity, newStatus));
     }
 }

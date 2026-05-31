@@ -1,7 +1,7 @@
 package io.github.pluton33.ezgloszenie.service;
 
 import io.github.pluton33.ezgloszenie.data.*;
-import io.github.pluton33.ezgloszenie.repository.Report_status_historyRepository;
+import io.github.pluton33.ezgloszenie.repository.ReportStatusHistoryRepository;
 import io.github.pluton33.ezgloszenie.repository.ReportsRepository;
 import io.github.pluton33.ezgloszenie.repository.StatusRepository;
 import io.github.pluton33.ezgloszenie.repository.UsersRepository;
@@ -19,10 +19,10 @@ public class ReportServiceImpl implements ReportService {
     private final UsersRepository usersRepository;
     private final ReportMapper reportMapper;
     private final StatusRepository statusRepository;
-    private final Report_status_historyRepository reportStatusHistoryRepository;
+    private final ReportStatusHistoryRepository reportStatusHistoryRepository;
 
     public ReportServiceImpl(ReportsRepository reportsRepository, UsersRepository usersRepository, ReportMapper reportMapper,
-                             StatusRepository statusRepository, Report_status_historyRepository reportStatusHistoryRepository) {
+                             StatusRepository statusRepository, ReportStatusHistoryRepository reportStatusHistoryRepository) {
         this.reportsRepository = reportsRepository;
         this.usersRepository = usersRepository;
         this.reportMapper = reportMapper;
@@ -39,11 +39,11 @@ public class ReportServiceImpl implements ReportService {
                 .toList();
         List<Report> reportStatus = new ArrayList<>();
         for(Report report : reports) {
-            Report_status_historyEntity reportStatusHistoryEntity = reportStatusHistoryRepository.
-                    findByReportId(report.id()).getFirst();
+            ReportStatusHistoryEntity reportStatusHistoryEntity = reportStatusHistoryRepository.
+                    findByReportIdAndValidToIsNull(report.id()).getFirst();
             StatusEntity statusEntity = statusRepository.findById(reportStatusHistoryEntity.getStatus().getId()).
                     orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Report does not have status"));
-            reportStatus.add(new Report(report.id(), report.title(), statusEntity.getName(), report.status(), report.user()));
+            reportStatus.add(new Report(report.id(), report.title(), report.description(), statusEntity.getName(), report.user()));
         }
         return new ReportsResponse(reportStatus);
     }
@@ -55,11 +55,11 @@ public class ReportServiceImpl implements ReportService {
                 .map(entity -> reportMapper.toDto(entity))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Brak zgłoszenia"
                 ));
-        Report_status_historyEntity reportStatusHistoryEntity = reportStatusHistoryRepository.
-                findByReportId(report.id()).getFirst();
+        ReportStatusHistoryEntity reportStatusHistoryEntity = reportStatusHistoryRepository.
+                findByReportIdAndValidToIsNull(report.id()).getFirst();
         StatusEntity statusEntity = statusRepository.findById(reportStatusHistoryEntity.getStatus().getId()).
                 orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Report does not have status"));
-        return  new Report(report.id(), report.title(), statusEntity.getName(), report.status(), report.user());
+        return  new Report(report.id(), report.title(), report.description(), statusEntity.getName(), report.user());
     }
 
     @Override
@@ -73,10 +73,11 @@ public class ReportServiceImpl implements ReportService {
         ReportEntity savedEntity = reportsRepository.save(reportEntity);
         StatusEntity statusEntity = new StatusEntity(report.status());
         StatusEntity savedStatus = statusRepository.save(statusEntity);
-        Report_status_historyEntity reportStatusHistoryEntity = new Report_status_historyEntity(savedEntity, statusEntity);
+        ReportStatusHistoryEntity reportStatusHistoryEntity = new ReportStatusHistoryEntity(savedEntity, savedStatus);
         reportStatusHistoryRepository.save(reportStatusHistoryEntity);
 
-        return reportMapper.toDto(savedEntity);
+        Report report1 = reportMapper.toDto(savedEntity);
+        return new Report(report1.id(), report1.title(), report1.description(), report.status(), report1.user());
     }
 
     @Override
@@ -99,14 +100,14 @@ public class ReportServiceImpl implements ReportService {
         reportEntity.setId(id);
         reportEntity.setUser(oldReportEntity.getUser());
         ReportEntity editedEntity = reportsRepository.save(reportEntity);
-        Report_status_historyEntity reportStatusHistoryEntity = reportStatusHistoryRepository.
-                findByReportId(editedEntity.getId()).getFirst();
+        ReportStatusHistoryEntity reportStatusHistoryEntity = reportStatusHistoryRepository.
+                findByReportIdAndValidToIsNull(editedEntity.getId()).getFirst();
         StatusEntity statusEntity = statusRepository.findById(reportStatusHistoryEntity.getStatus().getId()).
             orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Report does not have status"));
         statusEntity.setName(report.status());
         statusRepository.save(statusEntity);
         Report report1 = reportMapper.toDto(editedEntity);
-        return new Report(report1.id(), report1.title(), report1.status(), report.description(), report1.user());
+        return new Report(report1.id(), report1.title(), report1.description(), report.status(), report1.user());
     }
 
     @Override
@@ -121,16 +122,20 @@ public class ReportServiceImpl implements ReportService {
         if (!oldReportEntity.getUser().getEmail().equals(email)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No editing privileges for this report");
         }
-        reportsRepository.deleteById(id);
-        List<Report_status_historyEntity> reportStatusHistoryEntityList = reportStatusHistoryRepository.
-                findByReport_Id(id);
-        for(Report_status_historyEntity reportStatusHistoryEntity : reportStatusHistoryEntityList) {
+        List<ReportStatusHistoryEntity> reportStatusHistoryEntityList = reportStatusHistoryRepository.
+                findByReportId(id);
+        List<StatusEntity> statusEntities = new ArrayList<>();
+        for(ReportStatusHistoryEntity reportStatusHistoryEntity : reportStatusHistoryEntityList) {
             StatusEntity statusEntity = statusRepository.findById(reportStatusHistoryEntity.getStatus().getId()).
                     orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Report does not have status"));
-            statusRepository.delete(statusEntity);
+            statusEntities.add(statusEntity);
         }
-        for(Report_status_historyEntity reportStatusHistoryEntity : reportStatusHistoryEntityList) {
+        for(ReportStatusHistoryEntity reportStatusHistoryEntity : reportStatusHistoryEntityList) {
             reportStatusHistoryRepository.delete(reportStatusHistoryEntity);
         }
+        for(StatusEntity statusEntity : statusEntities) {
+            statusRepository.delete(statusEntity);
+        }
+        reportsRepository.deleteById(id);
     }
 }

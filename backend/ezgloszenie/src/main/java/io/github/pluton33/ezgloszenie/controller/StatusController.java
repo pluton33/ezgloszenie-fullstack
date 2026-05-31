@@ -11,14 +11,14 @@ public class StatusController {
     @Autowired
     private StatusService service;
 
-    @GetMapping("statusReport/{report_id}")
-    public StatusResponse getStatusReport(@PathVariable Long report_id) {
-        return service.getStatusReport(report_id);
+    @GetMapping("statusReport/{reportId}")
+    public StatusResponse getStatusReport(@PathVariable Long reportId) {
+        return service.getStatusReport(reportId);
     }
 
-    @PutMapping("updateStatus/{report_id}")
-    public ResponseEntity<Void> updateStatus(@PathVariable Long report_id, @RequestBody String status) {
-        service.updateStatus(report_id, status);
+    @PutMapping("updateStatus/{reportId}")
+    public ResponseEntity<Void> updateStatus(@PathVariable Long reportId, @RequestBody String status) {
+        service.updateStatus(reportId, status);
         return ResponseEntity.noContent().build();
     }
 }

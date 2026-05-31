@@ -6,25 +6,25 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "ReportsStatusHistory")
-public class Report_status_historyEntity {
-    public Report_status_historyEntity() {}
-    public Report_status_historyEntity(ReportEntity report, StatusEntity status) {
+public class ReportStatusHistoryEntity {
+    public ReportStatusHistoryEntity() {}
+    public ReportStatusHistoryEntity(ReportEntity report, StatusEntity status) {
         this.report = report;
         this.status = status;
-        valid_from = LocalDateTime.now();
-        valid_to = null;
+        validFrom = LocalDateTime.now();
+        validTo = null;
     }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private @Nullable Long id;
     @ManyToOne
-    @JoinColumn(name = "report_id", nullable = false)
+    @JoinColumn(name = "reportId", nullable = false)
     private ReportEntity report;
     @ManyToOne
-    @JoinColumn(name = "status_id", nullable = false)
+    @JoinColumn(name = "statusId", nullable = false)
     private StatusEntity status;
-    private LocalDateTime valid_from;
-    private @Nullable LocalDateTime valid_to;
+    private LocalDateTime validFrom;
+    private @Nullable LocalDateTime validTo;
 
     @Nullable
     public long getId() {
@@ -52,20 +52,20 @@ public class Report_status_historyEntity {
     }
 
     public LocalDateTime getValid_from() {
-        return valid_from;
+        return validFrom;
     }
 
-    public void setValid_from(LocalDateTime valid_from) {
-        this.valid_from = valid_from;
+    public void setValid_from(LocalDateTime validFrom) {
+        this.validFrom = validFrom;
     }
 
     @Nullable
     public LocalDateTime getValid_to() {
-        return valid_to;
+        return validTo;
     }
 
-    public void setValid_to(@Nullable LocalDateTime valid_to) {
-        this.valid_to = valid_to;
+    public void setValid_to(@Nullable LocalDateTime validTo) {
+        this.validTo = validTo;
     }
 
 
