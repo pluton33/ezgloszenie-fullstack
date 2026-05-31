@@ -2,7 +2,7 @@ package io.github.pluton33.ezgloszenie.data;
 
 import jakarta.annotation.Nullable;
 
-public record Report(@Nullable Long id, String title, String description, User user) {
+public record Report(@Nullable Long id, String title, String description, @Nullable String status, User user) {
 //    public static Report fromEntity(ReportEntity entity) {
 //        return new Report(entity.getId(), entity.getTitle(), entity.getDescription(), entity.getUser());
 //    }
