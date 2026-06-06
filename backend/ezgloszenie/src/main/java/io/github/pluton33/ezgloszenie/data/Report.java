@@ -1,8 +1,11 @@
 package io.github.pluton33.ezgloszenie.data;
 
-import jakarta.annotation.Nullable;
+import java.time.LocalDateTime;
 
-public record Report(@Nullable Long id, String title, String description, @Nullable String status, User user) {
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.Null;
+
+public record Report(@Nullable Long id, String title, String description, @Nullable String status,@Nullable Category category,User user, LocalDateTime created_date) {
 //    public static Report fromEntity(ReportEntity entity) {
 //        return new Report(entity.getId(), entity.getTitle(), entity.getDescription(), entity.getUser());
 //    }

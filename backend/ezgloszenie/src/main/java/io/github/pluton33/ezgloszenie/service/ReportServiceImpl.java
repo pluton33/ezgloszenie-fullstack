@@ -43,7 +43,7 @@ public class ReportServiceImpl implements ReportService {
                     findByReportIdAndValidToIsNull(report.id()).getFirst();
             StatusEntity statusEntity = statusRepository.findById(reportStatusHistoryEntity.getStatus().getId()).
                     orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Report does not have status"));
-            reportStatus.add(new Report(report.id(), report.title(), report.description(), statusEntity.getName(), report.user()));
+            reportStatus.add(new Report(report.id(), report.title(), report.description(), statusEntity.getName(),report.category(), report.user(),report.created_date()));
         }
         return new ReportsResponse(reportStatus);
     }
@@ -59,7 +59,7 @@ public class ReportServiceImpl implements ReportService {
                 findByReportIdAndValidToIsNull(report.id()).getFirst();
         StatusEntity statusEntity = statusRepository.findById(reportStatusHistoryEntity.getStatus().getId()).
                 orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Report does not have status"));
-        return  new Report(report.id(), report.title(), report.description(), statusEntity.getName(), report.user());
+        return  new Report(report.id(), report.title(), report.description(), statusEntity.getName(),report.category(), report.user(),report.created_date());
     }
 
     @Override
@@ -77,7 +77,7 @@ public class ReportServiceImpl implements ReportService {
         reportStatusHistoryRepository.save(reportStatusHistoryEntity);
 
         Report report1 = reportMapper.toDto(savedEntity);
-        return new Report(report1.id(), report1.title(), report1.description(), report.status(), report1.user());
+        return new Report(report1.id(), report1.title(), report1.description(), report.status(),report1.category(),report1.user(),report1.created_date());
     }
 
     @Override
@@ -107,7 +107,7 @@ public class ReportServiceImpl implements ReportService {
         statusEntity.setName(report.status());
         statusRepository.save(statusEntity);
         Report report1 = reportMapper.toDto(editedEntity);
-        return new Report(report1.id(), report1.title(), report1.description(), report.status(), report1.user());
+        return new Report(report1.id(), report1.title(), report1.description(), report.status(),report1.category(),report1.user(),report1.created_date());
     }
 
     @Override
