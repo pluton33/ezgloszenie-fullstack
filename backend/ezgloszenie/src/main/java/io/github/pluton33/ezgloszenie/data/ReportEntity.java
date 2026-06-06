@@ -2,7 +2,6 @@ package io.github.pluton33.ezgloszenie.data;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity(name = "reports")
@@ -17,6 +16,9 @@ public class ReportEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
+    @ManyToOne
+    @JoinColumn(name="report_id",nullable =false)
+    private CategoryEntity category;
 
     @Nullable
     public Long getId() {
@@ -58,4 +60,13 @@ public class ReportEntity {
     public void setUser(UserEntity user) {
         this.user = user;
     }
+
+    public CategoryEntity getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryEntity category) {
+        this.category = category;
+    }
+
 }
