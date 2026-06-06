@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.github.pluton33.ezgloszenie.data.CategoriesResponse;
 import io.github.pluton33.ezgloszenie.data.Category;
 import io.github.pluton33.ezgloszenie.data.CategoryCreationRequest;
+import io.github.pluton33.ezgloszenie.data.CategoryEditRequest;
 import io.github.pluton33.ezgloszenie.data.Report;
 import io.github.pluton33.ezgloszenie.data.ReportsResponse;
 import io.github.pluton33.ezgloszenie.service.CategoryService;
@@ -47,7 +48,7 @@ public class CategoryController {
     @PostMapping("/categories/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    public Category editCategory(@PathVariable long id,@RequestBody Category category, @AuthenticationPrincipal UserDetails user) {
+    public Category editCategory(@PathVariable long id,@RequestBody CategoryEditRequest category, @AuthenticationPrincipal UserDetails user) {
         String email = user.getUsername();
         return service.editCategory(id,category, email);
     }

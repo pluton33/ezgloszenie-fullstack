@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import io.github.pluton33.ezgloszenie.data.CategoriesResponse;
 import io.github.pluton33.ezgloszenie.data.Category;
 import io.github.pluton33.ezgloszenie.data.CategoryCreationRequest;
+import io.github.pluton33.ezgloszenie.data.CategoryEditRequest;
 import io.github.pluton33.ezgloszenie.data.CategoryEntity;
 import io.github.pluton33.ezgloszenie.data.CategoryMapper;
 import io.github.pluton33.ezgloszenie.data.UserEntity;
@@ -41,21 +42,18 @@ public class CategoryServiceImpl implements CategoryService {
     }
     @Transactional
     @Override
-    public Category editCategory(long id, Category category, String email) {
+    public Category editCategory(long id, CategoryEditRequest req, String email) {
         //Sprawdzanie uprawnień
         UserEntity userEntity = usersRepository.findByEmail(email)
         .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"User with this email is not existing!"));
 
         if(userEntity.getRole().getPermissionLevel()<minimumPermissionRole.getPermissionLevel())
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,"You don't have priveleges to edit that!");
-        if(category.id()==null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Category ID is required");
-        if(id != category.id()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Category ID mismatch");
-        }
         categoriesRepository.findById(id)
         .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found!"));
-        CategoryEntity categoryEntity = categoryMapper.toEntity(category);
+        CategoryEntity categoryEntity = new CategoryEntity();
+        categoryEntity.setId(id);
+        categoryEntity.setName(req.name());
         CategoryEntity editedEntity = categoriesRepository.save(categoryEntity);
         return categoryMapper.toDto(editedEntity);
     }
