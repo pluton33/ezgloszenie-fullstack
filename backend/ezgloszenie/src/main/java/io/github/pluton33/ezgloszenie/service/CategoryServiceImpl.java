@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import io.github.pluton33.ezgloszenie.data.CategoriesResponse;
 import io.github.pluton33.ezgloszenie.data.Category;
+import io.github.pluton33.ezgloszenie.data.CategoryCreationRequest;
 import io.github.pluton33.ezgloszenie.data.CategoryEntity;
 import io.github.pluton33.ezgloszenie.data.CategoryMapper;
 import io.github.pluton33.ezgloszenie.data.UserEntity;
@@ -59,15 +60,14 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapper.toDto(editedEntity);
     }
     @Override
-    public Category addCategory(Category category, String email) {
+    public Category addCategory(CategoryCreationRequest req, String email) {
 
         UserEntity userEntity = usersRepository.findByEmail(email)
         .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"User with this email is not existing!"));
 
         if(userEntity.getRole().getPermissionLevel()<minimumPermissionRole.getPermissionLevel())
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"You don't have priveleges to edit that!");
-        if(category.id()==null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Category ID is required");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"You don't have priveleges to add that!");
+        Category category = new Category(null, req.name());
         CategoryEntity categoryEntity = categoryMapper.toEntity(category);
         CategoryEntity addedEntity = categoriesRepository.save(categoryEntity);
         return categoryMapper.toDto(addedEntity);
