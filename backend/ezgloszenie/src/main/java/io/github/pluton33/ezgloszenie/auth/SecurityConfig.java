@@ -58,9 +58,15 @@ public class SecurityConfig {
                         .permitAll()
                 )
 //                .formLogin(withDefaults())
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll());
+                .logout((logout) -> logout
+                        .logoutUrl("/logout") // endpoint do wylogowania
+                        .invalidateHttpSession(true) // zabicie sesji uzytkownika
+                        .deleteCookies("JSESSIONID") // usunięcie ciasteczka ses
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_OK); // zwraca 200 OK zamiast przekierowania 302
+                        })
+                        .permitAll()
+                );
         return http.build();
     }
     @Bean
