@@ -32,20 +32,14 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public ReportsResponse getReports() {
-        int count=0;
         List<ReportEntity> reportEntities = reportsRepository.findAll();
         List<Report> reports = reportEntities.stream()
-                .map(entity -> reportMapper.toDto(entity))
+                .map(entity -> {
+                    Report dto = reportMapper.toDto(entity);
+                    return new Report(dto.id(), dto.title(), dto.description(), getCurrentStatusName(dto.id()), dto.category(), dto.user(), dto.created_date());
+                })
                 .toList();
-        List<Report> reportStatus = new ArrayList<>();
-        for(Report report : reports) {
-            ReportStatusHistoryEntity reportStatusHistoryEntity = reportStatusHistoryRepository.
-                    findByReportIdAndValidToIsNull(report.id()).getFirst();
-            StatusEntity statusEntity = statusRepository.findById(reportStatusHistoryEntity.getStatus().getId()).
-                    orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Report does not have status"));
-            reportStatus.add(new Report(report.id(), report.title(), report.description(), statusEntity.getName(),report.category(), report.user(),report.created_date()));
-        }
-        return new ReportsResponse(reportStatus);
+        return new ReportsResponse(reports);
     }
 
     @Override
