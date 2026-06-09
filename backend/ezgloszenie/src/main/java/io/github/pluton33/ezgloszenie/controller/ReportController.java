@@ -18,9 +18,16 @@ public class ReportController {
     @Autowired
     private ReportService service;
 
-    @GetMapping("/reports")
+    @GetMapping("reports")
     public ReportsResponse getReports() {
         return service.getReports();
+    }
+
+    @GetMapping("reports/me")
+    @PreAuthorize("isAuthenticated()")
+    public ReportsResponse getUserReports(@AuthenticationPrincipal UserDetails user) {
+        String email = user.getUsername();
+        return service.getUserReports(email);
     }
 
     @GetMapping("reports/{id}")
