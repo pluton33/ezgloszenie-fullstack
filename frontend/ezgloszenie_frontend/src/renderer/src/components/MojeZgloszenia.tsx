@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Eye, XCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import '../assets/mojezgloszenia.css';
 
-const API_BASE_URL = 'http://34.116.134.38:8080';
+const API_BASE_URL = 'http://localhost:8080';
 
 export interface User {
   id?: number;

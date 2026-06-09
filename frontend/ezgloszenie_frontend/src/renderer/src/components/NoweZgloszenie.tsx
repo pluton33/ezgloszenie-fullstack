@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import '../assets/nowezgloszenie.css';
 
-const API_BASE_URL = 'http://34.116.134.38:8080';
+const API_BASE_URL = 'http://localhost:8080';
 
 const KATEGORIE = [
   { value: 'Kradzież / Rozbój', icon: LockKeyhole },
@@ -105,17 +105,9 @@ function NoweZgloszenie(): React.JSX.Element {
           description: `${form.opis.trim()}\n\nMiejsce: ${form.miejsce.trim()}\nData zdarzenia: ${form.dataZdarzenia}${form.godzinaZdarzenia ? ` ${form.godzinaZdarzenia}` : ''}\nAnonimowe: ${form.anonimowe ? 'Tak' : 'Nie'}`,
           status: null,
           category: {
-            id: null,
+            id: 1,
             name: form.kategoria,
-          },
-          user: {
-            id: null,
-            email: '',
-            firstName: '',
-            lastName: '',
-            role: 'USER',
-          },
-          created_date: new Date().toISOString(),
+          }
         }),
       });
 
