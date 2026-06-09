@@ -17,7 +17,7 @@ public class ReportEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
     @ManyToOne
-    @JoinColumn(name="category_id",nullable =false)
+    @JoinColumn(name="report_id",nullable =false)
     private CategoryEntity category;
 
     @Nullable
