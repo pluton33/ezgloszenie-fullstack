@@ -33,7 +33,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http
-                .cors(cors->cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable()) //TYLKO DO TESTOWANIA
                 .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers(
@@ -69,13 +69,18 @@ public class SecurityConfig {
                 );
         return http.build();
     }
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:9229"));
+        config.setAllowedOrigins(List.of(
+                "http://localhost:9229",
+                "http://localhost:5173/",
+                "http://127.0.0.1:5173/"));
         config.setAllowedMethods(List.of("*"));
         config.setAllowedHeaders(List.of("*"));
+
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
