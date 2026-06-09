@@ -49,6 +49,18 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public ReportsResponse getUserReports(String email) {
+        List<ReportEntity> reportEntities = reportsRepository.findByUserEmail(email);
+        List<Report> reports = reportEntities.stream()
+                .map(entity -> {
+                    Report dto = reportMapper.toDto(entity);
+                    return new Report(dto.id(), dto.title(), dto.description(), getCurrentStatusName(dto.id()), dto.category(), dto.user(), dto.created_date());
+                })
+                .toList();
+        return new ReportsResponse(reports);
+    }
+
+    @Override
     public Report getReportById(long id) {
          Report report = reportsRepository
                 .findById(id)
@@ -137,5 +149,14 @@ public class ReportServiceImpl implements ReportService {
             statusRepository.delete(statusEntity);
         }
         reportsRepository.deleteById(id);
+    }
+
+    private String getCurrentStatusName(long reportId) {
+        return reportStatusHistoryRepository.findByReportIdAndValidToIsNull(reportId)
+                .stream()
+                .findFirst()
+                .flatMap(history -> statusRepository.findById(history.getStatus().getId()))
+                .map(StatusEntity::getName)
+                .orElse("BRAK_STATUSU");
     }
 }
