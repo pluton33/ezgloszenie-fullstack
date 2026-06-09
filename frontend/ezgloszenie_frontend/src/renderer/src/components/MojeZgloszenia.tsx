@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Eye, XCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import '../assets/mojezgloszenia.css';
 
+const API_BASE_URL = 'http://localhost:8080';
+
 export interface User {
-  id: number;
+  id?: number;
   role: 'USER' | 'MODERATOR' | 'ADMIN';
   email: string;
-  badgeNumber: number;
+  badgeNumber?: number;
   firstName: string;
   lastName: string;
 }
@@ -15,6 +17,7 @@ export interface Report {
   id: number;
   title: string;
   description: string;
+  status?: string | null;
   user: User;
 }
 
@@ -31,19 +34,42 @@ const MojeZgloszenia = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:8080/reports');
-      
+      const response = await fetch(`${API_BASE_URL}/reports/me`, {
+        credentials: 'include',
+      });
+
+      if (response.status === 401) {
+        throw new Error('Musisz się zalogować, aby zobaczyć swoje zgłoszenia.');
+      }
+
       if (!response.ok) {
         throw new Error(`Błąd serwera: ${response.status}`);
       }
-      
+
       const data: ReportsResponse = await response.json();
-      setReports(data.reports || []); 
+      setReports(data.reports || []);
     } catch (err: any) {
-      console.error("Błąd podczas pobierania zgłoszeń:", err);
-      setError('Nie udało się pobrać danych z serwera.');
+      console.error('Błąd podczas pobierania zgłoszeń:', err);
+      setError(err.message || 'Nie udało się pobrać danych z serwera.');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const deleteReport = async (id: number) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/reports/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Nie udało się usunąć zgłoszenia. (${response.status})`);
+      }
+
+      setReports((prev) => prev.filter((report) => report.id !== id));
+    } catch (err: any) {
+      setError(err.message || 'Nie udało się usunąć zgłoszenia.');
     }
   };
 
@@ -53,23 +79,21 @@ const MojeZgloszenia = () => {
 
   return (
     <div className="zgloszenia-container">
-      {/* Nagłówek */}
       <div className="zgloszenia-header">
         <div>
           <h1 className="zgloszenia-title">Lista Zgłoszeń</h1>
           <p className="zgloszenia-subtitle">Przeglądaj swoje zgłoszenia</p>
         </div>
-        <button 
+        <button
           onClick={fetchReports}
           disabled={isLoading}
           className="btn-refresh"
         >
-          <RefreshCw size={18} className={isLoading ? "icon-spin" : ""} />
+          <RefreshCw size={18} className={isLoading ? 'icon-spin' : ''} />
           Odśwież
         </button>
       </div>
 
-      {/* Komunikat o błędzie */}
       {error && (
         <div className="error-box">
           <AlertCircle size={24} />
@@ -77,7 +101,6 @@ const MojeZgloszenia = () => {
         </div>
       )}
 
-      {/* Tabela */}
       <div className="table-wrapper">
         <table className="zgloszenia-table">
           <thead>
@@ -114,10 +137,12 @@ const MojeZgloszenia = () => {
                   <td>
                     <div className="user-info">
                       <span className="user-name">
-                        {report.user.firstName} {report.user.lastName}
+                        {report.user?.firstName || '-'} {report.user?.lastName || ''}
                       </span>
                       <span className="user-badge">
-                        Odznaka: {report.user.badgeNumber} ({report.user.role})
+                        {typeof report.user?.badgeNumber === 'number'
+                          ? `Odznaka: ${report.user.badgeNumber} (${report.user?.role || '-'})`
+                          : `${report.user?.role || '-'} · ${report.user?.email || ''}`}
                       </span>
                     </div>
                   </td>
@@ -126,7 +151,7 @@ const MojeZgloszenia = () => {
                       <button className="btn-action view" title="Zobacz szczegóły">
                         <Eye size={20} />
                       </button>
-                      <button className="btn-action delete" title="Usuń">
+                      <button className="btn-action delete" title="Usuń" onClick={() => deleteReport(report.id)}>
                         <XCircle size={20} />
                       </button>
                     </div>

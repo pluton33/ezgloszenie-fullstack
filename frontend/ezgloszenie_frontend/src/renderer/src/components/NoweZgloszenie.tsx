@@ -8,6 +8,8 @@ import {
 } from 'lucide-react';
 import '../assets/nowezgloszenie.css';
 
+const API_BASE_URL = 'http://localhost:8080';
+
 const KATEGORIE = [
   { value: 'Kradzież / Rozbój', icon: LockKeyhole },
   { value: 'Uszkodzenie mienia', icon: Hammer },
@@ -23,6 +25,8 @@ function NoweZgloszenie(): React.JSX.Element {
   const navigate = useNavigate();
   const [krok, setKrok] = useState(1);
   const [wyslano, setWyslano] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [form, setForm] = useState({
     kategoria: '',
     tytul: '',
@@ -37,6 +41,7 @@ function NoweZgloszenie(): React.JSX.Element {
   const set = (name: string, value: any) => {
     setForm(p => ({ ...p, [name]: value }));
     if (bledy[name]) setBledy(p => ({ ...p, [name]: '' }));
+    if (submitError) setSubmitError(null);
   };
 
   const waliduj1 = () => {
@@ -63,6 +68,67 @@ function NoweZgloszenie(): React.JSX.Element {
 
   const wstecz = () => setKrok(k => k - 1);
 
+  const resetForm = () => {
+    setKrok(1);
+    setForm({
+      kategoria: '',
+      tytul: '',
+      opis: '',
+      dataZdarzenia: '',
+      godzinaZdarzenia: '',
+      miejsce: '',
+      anonimowe: false,
+    });
+    setBledy({});
+    setSubmitError(null);
+  };
+
+  const handleSubmit = async () => {
+    if (!waliduj1() || !waliduj2()) {
+      setKrok(!waliduj1() ? 1 : 2);
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/addReport`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          id: null,
+          title: form.tytul.trim(),
+          description: `${form.opis.trim()}\n\nMiejsce: ${form.miejsce.trim()}\nData zdarzenia: ${form.dataZdarzenia}${form.godzinaZdarzenia ? ` ${form.godzinaZdarzenia}` : ''}\nAnonimowe: ${form.anonimowe ? 'Tak' : 'Nie'}`,
+          status: null,
+          category: {
+            id: 1,
+            name: form.kategoria,
+          }
+        }),
+      });
+
+      if (response.status === 401) {
+        setSubmitError('Musisz się zalogować, aby wysłać zgłoszenie.');
+        return;
+      }
+
+      if (!response.ok) {
+        setSubmitError(`Nie udało się wysłać zgłoszenia. Kod błędu: ${response.status}.`);
+        return;
+      }
+
+      setWyslano(true);
+    } catch {
+      setSubmitError('Nie udało się połączyć z serwerem.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (wyslano) return (
     <div className="nz-page">
       <div className="nz-sukces-wrapper">
@@ -76,7 +142,7 @@ function NoweZgloszenie(): React.JSX.Element {
             <ShieldAlert size={32} style={{ marginBottom: 10 }} />
             <span>Moje Zgłoszenia</span>
           </button>
-          <button className="action-card secondary nz-btn-kafelek" onClick={() => { setWyslano(false); setKrok(1); setForm({ kategoria:'', tytul:'', opis:'', dataZdarzenia:'', godzinaZdarzenia:'', miejsce:'', anonimowe:false }); }}>
+          <button className="action-card secondary nz-btn-kafelek" onClick={() => { setWyslano(false); resetForm(); }}>
             <FileText size={32} style={{ marginBottom: 10 }} />
             <span>Nowe Zgłoszenie</span>
           </button>
@@ -95,13 +161,13 @@ function NoweZgloszenie(): React.JSX.Element {
       <div className="nz-steps">
         {['Kategoria i opis', 'Miejsce i czas', 'Podsumowanie'].map((l, i) => (
           <React.Fragment key={i}>
-            <div className={`nz-step${krok === i+1 ? ' active' : ''}${krok > i+1 ? ' done' : ''}`}>
+            <div className={`nz-step${krok === i + 1 ? ' active' : ''}${krok > i + 1 ? ' done' : ''}`}>
               <div className="nz-step-num">
-                {krok > i+1 ? <CheckCircle size={14}/> : i+1}
+                {krok > i + 1 ? <CheckCircle size={14} /> : i + 1}
               </div>
               <span>{l}</span>
             </div>
-            {i < 2 && <div className={`nz-step-line${krok > i+1 ? ' done' : ''}`}/>}
+            {i < 2 && <div className={`nz-step-line${krok > i + 1 ? ' done' : ''}`} />}
           </React.Fragment>
         ))}
       </div>
@@ -162,7 +228,7 @@ function NoweZgloszenie(): React.JSX.Element {
                 checked={form.anonimowe}
                 onChange={e => set('anonimowe', e.target.checked)}
               />
-              <label htmlFor="anon"><UserX size={15}/> Złóż zgłoszenie anonimowo</label>
+              <label htmlFor="anon"><UserX size={15} /> Złóż zgłoszenie anonimowo</label>
             </div>
           </div>
         </div>
@@ -172,7 +238,7 @@ function NoweZgloszenie(): React.JSX.Element {
         <div className="nz-section">
           <div className="action-cards-container nz-czas-grid">
             <div className={`action-card secondary nz-info-kafelek${bledy.dataZdarzenia ? ' error-card' : ''}`}>
-              <MapPin size={28} style={{ marginBottom: 8 }}/>
+              <MapPin size={28} style={{ marginBottom: 8 }} />
               <h2>Data zdarzenia *</h2>
               <input
                 type="date"
@@ -185,7 +251,7 @@ function NoweZgloszenie(): React.JSX.Element {
             </div>
 
             <div className="action-card secondary nz-info-kafelek">
-              <Clock size={28} style={{ marginBottom: 8 }}/>
+              <Clock size={28} style={{ marginBottom: 8 }} />
               <h2>Godzina <span style={{ fontWeight: 400, fontSize: '0.85rem' }}>(opcjonalnie)</span></h2>
               <input
                 type="time"
@@ -212,7 +278,7 @@ function NoweZgloszenie(): React.JSX.Element {
           </div>
 
           <div className="nz-infobox">
-            <AlertTriangle size={16}/>
+            <AlertTriangle size={16} />
             <p>Podanie dokładnego adresu znacznie przyspieszy interwencję funkcjonariuszy.</p>
           </div>
         </div>
@@ -247,17 +313,19 @@ function NoweZgloszenie(): React.JSX.Element {
             </div>
           </div>
 
+          {submitError && <div style={{ marginTop: '16px', color: '#c62828' }}>{submitError}</div>}
+
           <div className="nz-infobox nz-infobox-warn">
-            <AlertTriangle size={16}/>
+            <AlertTriangle size={16} />
             <p>Składanie fałszywych zeznań jest przestępstwem — art. 233 Kodeksu Karnego.</p>
           </div>
         </div>
       )}
 
       <div className="nz-nav">
-        {krok > 1 && <button className="action-card secondary nz-nav-btn" onClick={wstecz}><ChevronLeft size={18}/> Wstecz</button>}
-        {krok < 3 && <button className="action-card primary nz-nav-btn" onClick={dalej}>Dalej <ChevronRight size={18}/></button>}
-        {krok === 3 && <button className="action-card primary nz-nav-btn nz-wyslij" onClick={() => setWyslano(true)}><CheckCircle size={18}/> Wyślij zgłoszenie</button>}
+        {krok > 1 && <button className="action-card secondary nz-nav-btn" onClick={wstecz}><ChevronLeft size={18} /> Wstecz</button>}
+        {krok < 3 && <button className="action-card primary nz-nav-btn" onClick={dalej}>Dalej <ChevronRight size={18} /></button>}
+        {krok === 3 && <button className="action-card primary nz-nav-btn nz-wyslij" onClick={handleSubmit} disabled={isSubmitting}><CheckCircle size={18} /> {isSubmitting ? 'Wysyłanie...' : 'Wyślij zgłoszenie'}</button>}
       </div>
     </div>
   );
