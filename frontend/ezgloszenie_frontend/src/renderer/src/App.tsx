@@ -1,35 +1,30 @@
-import Versions from './components/Versions'
-import electronLogo from './assets/electron.svg'
+import React from 'react';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Login from './components/Login';
+import Register from './components/Register';
+import Hero from './components/Hero';
+import Pomoc from './components/Pomoc';
+import MojeZgloszenia from './components/MojeZgloszenia';
+import NoweZgloszenie from './components/NoweZgloszenie';
 
 function App(): React.JSX.Element {
-  const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
-
   return (
     <>
-      <img alt="logo" className="logo" src={electronLogo} />
-      <div className="creator">Powered by electron-vite</div>
-      <div className="text">
-        Build an Electron app with <span className="react">React</span>
-        &nbsp;and <span className="ts">TypeScript</span>
-      </div>
-      <p className="tip">
-        Please try pressing <code>F12</code> to open the devTool
-      </p>
-      <div className="actions">
-        <div className="action">
-          <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">
-            Documentation
-          </a>
-        </div>
-        <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={ipcHandle}>
-            Send IPC
-          </a>
-        </div>
-      </div>
-      <Versions></Versions>
+      <HashRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/"                element={<Navigate to="/home" replace />} />
+          <Route path="/login"           element={<Login />} />
+          <Route path="/register"        element={<Register />} />
+          <Route path="/home"            element={<Hero />} />
+          <Route path="/pomoc"           element={<Pomoc />} />
+          <Route path="/moje-zgloszenia" element={<MojeZgloszenia />} />
+          <Route path="/nowe-zgloszenie" element={<NoweZgloszenie />} />
+        </Routes>
+      </HashRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

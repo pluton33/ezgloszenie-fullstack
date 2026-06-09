@@ -1,0 +1,323 @@
+/* ===== NOWE ZGŁOSZENIE — styl kafelkowy jak hero ===== */
+
+.nz-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 80px);
+  background-color: white;
+  padding: 40px 20px;
+  overflow-y: auto;
+  font-family: 'PT Sans', sans-serif;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Pasek kroków */
+.nz-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 32px;
+  width: 100%;
+  max-width: 700px;
+}
+.nz-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #9ca3af;
+  white-space: nowrap;
+}
+.nz-step.active { color: #002354; font-weight: 700; }
+.nz-step.done   { color: #2e7d32; }
+.nz-step-num {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
+}
+.nz-step.active .nz-step-num { background: #002354; border-color: #002354; color: white; }
+.nz-step.done   .nz-step-num { background: #2e7d32; border-color: #2e7d32; color: white; }
+.nz-step-line {
+  flex: 1; height: 2px;
+  background: #e5e7eb;
+  margin: 0 10px; min-width: 24px;
+}
+.nz-step-line.done { background: #2e7d32; }
+
+/* Sekcja */
+.nz-section {
+  width: 100%;
+  max-width: 950px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* Etykieta nad kafelkami */
+.nz-label-top {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 14px;
+  align-self: flex-start;
+}
+
+/* Kafelki kategorii — mniejsze niż hero, 4 w rzędzie */
+.nz-kategorie {
+  gap: 12px !important;
+  justify-content: flex-start !important;
+}
+.nz-kat-card {
+  width: 200px !important;
+  padding: 18px 14px !important;
+  flex-direction: column;
+}
+.nz-kat-emoji {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+  display: block;
+}
+.nz-kat-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Pola tekstowe */
+.nz-pola {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  margin-top: 20px;
+}
+.nz-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.nz-field label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.nz-field input,
+.nz-field textarea {
+  padding: 10px 14px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 0.95rem;
+  color: #1f2937;
+  background: #f9fafb;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.nz-field input:focus,
+.nz-field textarea:focus {
+  border-color: #002354;
+  box-shadow: 0 0 0 3px rgba(0, 35, 84, 0.08);
+  background: white;
+}
+.nz-field input.error,
+.nz-field textarea.error { border-color: #ef4444; }
+.nz-error { font-size: 0.8rem; color: #b91c1c; margin-top: 2px; }
+.nz-char  { font-size: 0.78rem; color: #9ca3af; align-self: flex-end; }
+
+/* Anonimowo */
+.nz-anon-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #6b7280;
+  cursor: pointer;
+}
+.nz-anon-row input[type="checkbox"] {
+  width: 16px; height: 16px;
+  accent-color: #002354;
+  cursor: pointer;
+}
+.nz-anon-row label {
+  display: flex; align-items: center; gap: 6px; cursor: pointer;
+}
+
+/* Kafelki daty/czasu */
+.nz-czas-grid {
+  gap: 16px !important;
+  justify-content: center !important;
+}
+.nz-info-kafelek {
+  width: 240px !important;
+  padding: 24px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  cursor: default !important;
+}
+.nz-info-kafelek h2 {
+  font-size: 1rem;
+  margin-bottom: 12px;
+  color: #002354;
+}
+.nz-info-kafelek:hover { opacity: 1 !important; }
+.nz-input-inline {
+  padding: 8px 12px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-family: 'PT Sans', sans-serif;
+  font-size: 0.95rem;
+  color: #1f2937;
+  background: white;
+  outline: none;
+  width: 100%;
+  text-align: center;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.nz-input-inline:focus {
+  border-color: #002354;
+  box-shadow: 0 0 0 3px rgba(0,35,84,0.08);
+}
+.error-card { border: 2px solid #ef4444 !important; }
+
+/* Infobox */
+.nz-infobox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #eff6ff;
+  border-left: 3px solid #002354;
+  border-radius: 6px;
+  padding: 12px 16px;
+  color: #002354;
+  font-size: 0.88rem;
+  margin-top: 20px;
+  width: 100%;
+}
+.nz-infobox p { margin: 0; color: inherit; max-width: none; }
+.nz-infobox-warn { background: #fffbeb; border-color: #b45309; color: #b45309; }
+
+/* Podsumowanie w kafelkach */
+.nz-podsumowanie-grid {
+  gap: 12px !important;
+  justify-content: flex-start !important;
+  flex-wrap: wrap !important;
+}
+.nz-sum-card {
+  min-width: 200px !important;
+  padding: 18px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+  cursor: default !important;
+  gap: 6px;
+}
+.nz-sum-card:hover { opacity: 1 !important; }
+.nz-sum-wide { width: 100% !important; flex: 1 1 100% !important; }
+.nz-sum-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Przyciski nawigacji — styl kafelkowy */
+.nz-nav {
+  display: flex;
+  gap: 14px;
+  margin-top: 28px;
+  justify-content: center;
+}
+.nz-nav-btn {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 12px 28px !important;
+  width: auto !important;
+  font-size: 1rem !important;
+}
+.nz-wyslij { min-width: 220px; justify-content: center; }
+
+/* Sukces */
+.nz-sukces-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  max-width: 600px;
+}
+.nz-sukces-card {
+  width: 100% !important;
+  padding: 48px 40px !important;
+  gap: 12px;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+.nz-sukces-card h2 { font-size: 1.5rem; margin: 0; }
+.nz-sukces-card p  { font-size: 0.95rem; margin: 0; opacity: 0.85; }
+.nz-sukces-btns {
+  display: flex;
+  gap: 16px;
+}
+.nz-btn-kafelek {
+  width: 180px !important;
+  padding: 24px 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+.nz-btn-kafelek span { font-size: 0.95rem; font-weight: 700; }
+
+/* Ciemny motyw */
+[data-theme="dark"] .nz-page {
+  background-color: #0d1117;
+  color: #e2e8f0;
+}
+[data-theme="dark"] .nz-label-top,
+[data-theme="dark"] .nz-field label { color: #cbd5e1; }
+[data-theme="dark"] .nz-field input,
+[data-theme="dark"] .nz-field textarea,
+[data-theme="dark"] .nz-input-inline {
+  background: #1c2333;
+  border-color: #374260;
+  color: #e2e8f0;
+}
+[data-theme="dark"] .nz-field input:focus,
+[data-theme="dark"] .nz-field textarea:focus,
+[data-theme="dark"] .nz-input-inline:focus {
+  border-color: #4a90d9;
+  box-shadow: 0 0 0 3px rgba(74,144,217,0.15);
+  background: #161b27;
+}
+[data-theme="dark"] .action-card.secondary {
+  background-color: #1c2333;
+  color: #e2e8f0;
+}
+[data-theme="dark"] .nz-sum-label { color: #4a5568; }
+[data-theme="dark"] .nz-infobox { background: #1a2d4a; border-color: #4a90d9; color: #93c5fd; }
+[data-theme="dark"] .nz-infobox-warn { background: #2a1f0a; border-color: #fbbf24; color: #fbbf24; }
+[data-theme="dark"] .nz-step { color: #4a5568; }
+[data-theme="dark"] .nz-step.active { color: #4a90d9; }
+[data-theme="dark"] .nz-step.active .nz-step-num { background: #4a90d9; border-color: #4a90d9; }
+[data-theme="dark"] .nz-info-kafelek h2 { color: #93c5fd; }
+
+@media (max-width: 640px) {
+  .nz-kat-card   { width: 140px !important; }
+  .nz-czas-grid  { flex-direction: column; align-items: center; }
+  .nz-info-kafelek { width: 100% !important; }
+  .nz-steps span { display: none; }
+  .nz-nav-btn    { padding: 10px 18px !important; }
+}
