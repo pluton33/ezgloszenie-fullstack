@@ -14,7 +14,7 @@ function App(): React.JSX.Element {
       <HashRouter>
         <Navbar />
         <Routes>
-          <Route path="/"                element={<Navigate to="/home" replace />} />
+          <Route path="/"                element={<Navigate to="/login" replace />} />
           <Route path="/login"           element={<Login />} />
           <Route path="/register"        element={<Register />} />
           <Route path="/home"            element={<Hero />} />

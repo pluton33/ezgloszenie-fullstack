@@ -3,7 +3,7 @@
   padding: 40px;
   max-width: 1200px;
   margin: 0 auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Saira', sans-serif;
   color: var(--text-primary);
   animation: fadeIn 0.3s ease-in-out;
 }

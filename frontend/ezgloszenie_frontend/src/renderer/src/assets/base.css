@@ -6,6 +6,20 @@ margin: 0;
 font-weight: normal;
 }
 
+@font-face {
+  font-family: 'Saira';
+  src: url('./Saira-Regular.ttf') format('truetype');
+  font-weight: 400; /* Zmień z normal na 400 dla porządku */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Saira';
+  src: url('./Saira-SemiBold.ttf') format('truetype');
+  font-weight: 600; /* Przypisanie wagi 600 do tego konkretnego pliku */
+  font-style: normal;
+}
+
 ul {
 list-style: none;
 }
@@ -70,23 +84,12 @@ transition: var(--theme-transition);
 }
 
 body {
-background-color: var(--bg-color) !important;
-transition: background-color 0.3s ease;
-color: var(--text-primary);
-font-family:
-Inter,
--apple-system,
-BlinkMacSystemFont,
-'Segoe UI',
-Roboto,
-Oxygen,
-Ubuntu,
-Cantarell,
-'Fira Sans',
-'Droid Sans',
-'Helvetica Neue',
-sans-serif;
-text-rendering: optimizeLegibility;
--webkit-font-smoothing: antialiased;
--moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-color) !important;
+  transition: background-color 0.3s ease;
+  color: var(--text-primary);
+  /* 2. ZMIEŃ FONT-FAMILY W BODY */
+  font-family: 'Saira', sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

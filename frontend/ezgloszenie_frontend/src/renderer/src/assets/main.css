@@ -33,7 +33,7 @@
   font-size: 2rem;
   letter-spacing: 1px;
   margin-bottom: 5px;
-  font-family: 'PT Sans';
+  font-family: 'Saira', sans-serif;
   font-weight: 600;
   font-style: normal;
   clip-path: inset(0 100% 0 0);
@@ -157,7 +157,7 @@
   padding: 10px 16px;
   width: 100%;
   text-align: left;
-  font-family: 'PT Sans', sans-serif;
+  font-family: 'Saira', sans-serif;
   font-size: 0.95rem;
   color: #374151;
   cursor: pointer;
@@ -275,7 +275,7 @@
   border-radius: 10px;
   width: 200px;
   outline: none;
-  font-family: 'PT Sans';
+  font-family: 'Saira', sans-serif;
 }
 
 .login-text-label {
@@ -302,7 +302,7 @@
 
 .login-btn-text {
   color: #e0e0e0;
-  font-family: 'PT Sans';
+  font-family: 'Saira', sans-serif;
   font-weight: 600;
 
 }
