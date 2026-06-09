@@ -80,6 +80,7 @@ public class SecurityConfig {
                 "http://127.0.0.1:5173/"));
         config.setAllowedMethods(List.of("*"));
         config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
 
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
