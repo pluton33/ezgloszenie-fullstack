@@ -13,6 +13,9 @@ public class ReportEntity {
     private String title;
     private String description;
     private LocalDateTime created_date;
+    private LocalDateTime accident_date;
+    private String location;
+    private boolean userAnonymous;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
@@ -69,4 +72,27 @@ public class ReportEntity {
         this.category = category;
     }
 
+    public LocalDateTime getAccident_date() {
+        return accident_date;
+    }
+
+    public void setAccident_date(LocalDateTime accident_date) {
+        this.accident_date = accident_date;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public boolean isUserAnonymous() {
+        return userAnonymous;
+    }
+
+    public void setUserAnonymous(boolean userAnonymous) {
+        this.userAnonymous = userAnonymous;
+    }
 }
