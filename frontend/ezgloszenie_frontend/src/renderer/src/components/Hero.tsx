@@ -1,27 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ClipboardList, BookOpen, ShieldAlert } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import '../assets/hero.css';
 
-function Hero() {
+function Hero(): React.JSX.Element {
   const navigate = useNavigate();
+  const [displayName, setDisplayName] = useState('Użytkowniku');
+
+  const getEmailName = (email?: string) => {
+    if (!email) return 'Użytkowniku';
+    return email.split('@')[0] || 'Użytkowniku';
+  };
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('userEmail');
+    if (savedEmail) {
+      setDisplayName(getEmailName(savedEmail));
+    }
+  }, []);
+
   return (
     <div className="main-panel">
       <div className="hero-welcome">
-        <h1>Witaj, Użytkowniku!</h1>
+        <h1>Witaj, {displayName}!</h1>
         <p>Wybierz akcję, aby rozpocząć lub sprawdź status swoich spraw.</p>
       </div>
+
       <div className="action-cards-container">
         <button className="action-card primary" onClick={() => navigate('/nowe-zgloszenie')}>
           <ClipboardList size={40} className="card-icon" />
           <h2>Nowe Zgłoszenie</h2>
           <p>Zgłoś incydent, przestępstwo lub wykroczenie online.</p>
         </button>
+
         <button className="action-card secondary" onClick={() => navigate('/moje-zgloszenia')}>
           <ShieldAlert size={40} className="card-icon" />
           <h2>Moje Zgłoszenia</h2>
           <p>Przeglądaj historię i sprawdzaj status swoich spraw.</p>
         </button>
+
         <button className="action-card secondary" onClick={() => navigate('/pomoc')}>
           <BookOpen size={40} className="card-icon" />
           <h2>Pomoc i instrukcje</h2>

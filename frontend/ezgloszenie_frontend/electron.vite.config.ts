@@ -11,6 +11,16 @@ export default defineConfig({
         '@renderer': resolve('src/renderer/src')
       }
     },
+    server: {
+      proxy: {
+        '/api': {
+          target: 'http://34.116.134.38:8080',
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path) => path.replace(/^\/api/, '')
+        }
+      }
+    },
     plugins: [react()]
   }
 })

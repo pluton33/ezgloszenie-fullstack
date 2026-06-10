@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { LockIcon, MailIcon, SquareArrowRightEnter } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = '/api';
 
 function Register(): React.JSX.Element {
     const navigate = useNavigate();

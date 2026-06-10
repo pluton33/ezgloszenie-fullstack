@@ -7,6 +7,7 @@ import Hero from './components/Hero';
 import Pomoc from './components/Pomoc';
 import MojeZgloszenia from './components/MojeZgloszenia';
 import NoweZgloszenie from './components/NoweZgloszenie';
+import Profil from './components/Profil';
 
 function App(): React.JSX.Element {
   return (
@@ -14,13 +15,14 @@ function App(): React.JSX.Element {
       <HashRouter>
         <Navbar />
         <Routes>
-          <Route path="/"                element={<Navigate to="/login" replace />} />
-          <Route path="/login"           element={<Login />} />
-          <Route path="/register"        element={<Register />} />
-          <Route path="/home"            element={<Hero />} />
-          <Route path="/pomoc"           element={<Pomoc />} />
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/home" element={<Hero />} />
+          <Route path="/pomoc" element={<Pomoc />} />
           <Route path="/moje-zgloszenia" element={<MojeZgloszenia />} />
           <Route path="/nowe-zgloszenie" element={<NoweZgloszenie />} />
+          <Route path="/profil" element={<Profil />} />
         </Routes>
       </HashRouter>
     </>
