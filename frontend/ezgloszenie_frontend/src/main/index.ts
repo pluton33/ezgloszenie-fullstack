@@ -1,10 +1,15 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, protocol, net } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
+// 1. Rejestracja własnego protokołu z uprawnieniami do ciasteczek i Fetch API
+protocol.registerSchemesAsPrivileged([
+  { scheme: 'app', privileges: { secure: true, standard: true, supportFetchAPI: true } }
+])
+
 function createWindow(): void {
-  // Create the browser window 
+  // Create the browser window
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
@@ -28,11 +33,12 @@ function createWindow(): void {
   })
 
   // HMR for renderer base on electron-vite cli.
-  // Load the remote URL for development or the local html file for production.
+  // Load the remote URL for development or the local app:// protocol for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
+    // 2. Ładowanie aplikacji przez nasz nowy protokół zamiast loadFile
+    mainWindow.loadURL('app://-/index.html')
   }
 }
 
@@ -40,6 +46,13 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  // 3. Obsługa żądań dla naszego protokołu
+  protocol.handle('app', (request) => {
+    const url = request.url.replace('app://-', '')
+    // Mapowanie adresu app:// na fizyczne pliki na dysku
+    return net.fetch('file://' + join(__dirname, '../renderer', url))
+  })
+
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
 
