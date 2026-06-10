@@ -36,7 +36,7 @@ public class ReportServiceImpl implements ReportService {
         List<Report> reports = reportEntities.stream()
                 .map(entity -> {
                     Report dto = reportMapper.toDto(entity);
-                    return new Report(dto.id(), dto.title(), dto.description(), getCurrentStatusName(dto.id()), dto.category(), dto.user(), dto.created_date());
+                    return new Report(dto.id(), dto.title(), dto.description(), getCurrentStatusName(dto.id()), dto.category(), dto.user(), dto.created_date(), dto.accident_date(), dto.location(), dto.userAnonymous());
                 })
                 .toList();
         return new ReportsResponse(reports);
@@ -48,7 +48,7 @@ public class ReportServiceImpl implements ReportService {
         List<Report> reports = reportEntities.stream()
                 .map(entity -> {
                     Report dto = reportMapper.toDto(entity);
-                    return new Report(dto.id(), dto.title(), dto.description(), getCurrentStatusName(dto.id()), dto.category(), dto.user(), dto.created_date());
+                    return new Report(dto.id(), dto.title(), dto.description(), getCurrentStatusName(dto.id()), dto.category(), dto.user(), dto.created_date(), dto.accident_date(), dto.location(), dto.userAnonymous());
                 })
                 .toList();
         return new ReportsResponse(reports);
@@ -65,7 +65,7 @@ public class ReportServiceImpl implements ReportService {
                 findByReportIdAndValidToIsNull(report.id()).getFirst();
         StatusEntity statusEntity = statusRepository.findById(reportStatusHistoryEntity.getStatus().getId()).
                 orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Report does not have status"));
-        return  new Report(report.id(), report.title(), report.description(), statusEntity.getName(),report.category(), report.user(),report.created_date());
+        return  new Report(report.id(), report.title(), report.description(), statusEntity.getName(),report.category(), report.user(),report.created_date(), report.accident_date(), report.location(), report.userAnonymous());
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ReportServiceImpl implements ReportService {
         reportStatusHistoryRepository.save(reportStatusHistoryEntity);
 
         Report report1 = reportMapper.toDto(savedEntity);
-        return new Report(report1.id(), report1.title(), report1.description(), report.status(),report1.category(),report1.user(),report1.created_date());
+        return new Report(report1.id(), report1.title(), report1.description(), report.status(),report1.category(),report1.user(),report1.created_date(), report1.accident_date(), report1.location(), report1.userAnonymous());
     }
 
     @Override
@@ -113,7 +113,7 @@ public class ReportServiceImpl implements ReportService {
         statusEntity.setName(report.status());
         statusRepository.save(statusEntity);
         Report report1 = reportMapper.toDto(editedEntity);
-        return new Report(report1.id(), report1.title(), report1.description(), report.status(),report1.category(),report1.user(),report1.created_date());
+        return new Report(report1.id(), report1.title(), report1.description(), report.status(),report1.category(),report1.user(),report1.created_date(), report1.accident_date(), report1.location(), report1.userAnonymous());
     }
 
     @Override
