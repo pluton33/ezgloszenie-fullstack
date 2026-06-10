@@ -8,18 +8,28 @@ import {
 } from 'lucide-react';
 import '../assets/nowezgloszenie.css';
 
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = '/api';
 
 const KATEGORIE = [
-  { value: 'Kradzież / Rozbój', icon: LockKeyhole },
-  { value: 'Uszkodzenie mienia', icon: Hammer },
-  { value: 'Przemoc domowa', icon: House },
-  { value: 'Wypadek drogowy', icon: Car },
-  { value: 'Zakłócenie porządku', icon: Siren },
-  { value: 'Narkotyki', icon: Pill },
-  { value: 'Cyberprzestępstwo', icon: Laptop },
-  { value: 'Inne', icon: ClipboardList },
+  { id: 1, value: 'Kradzież / Rozbój', icon: LockKeyhole },
+  { id: 2, value: 'Uszkodzenie mienia', icon: Hammer },
+  { id: 3, value: 'Przemoc domowa', icon: House },
+  { id: 4, value: 'Wypadek drogowy', icon: Car },
+  { id: 5, value: 'Zakłócenie porządku', icon: Siren },
+  { id: 6, value: 'Narkotyki', icon: Pill },
+  { id: 7, value: 'Cyberprzestępstwo', icon: Laptop },
+  { id: 8, value: 'Inne', icon: ClipboardList },
 ];
+
+type FormState = {
+  kategoriaId: number | null;
+  tytul: string;
+  opis: string;
+  dataZdarzenia: string;
+  godzinaZdarzenia: string;
+  miejsce: string;
+  anonimowe: boolean;
+};
 
 function NoweZgloszenie(): React.JSX.Element {
   const navigate = useNavigate();
@@ -27,8 +37,8 @@ function NoweZgloszenie(): React.JSX.Element {
   const [wyslano, setWyslano] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [form, setForm] = useState({
-    kategoria: '',
+  const [form, setForm] = useState<FormState>({
+    kategoriaId: null,
     tytul: '',
     opis: '',
     dataZdarzenia: '',
@@ -38,15 +48,17 @@ function NoweZgloszenie(): React.JSX.Element {
   });
   const [bledy, setBledy] = useState<Record<string, string>>({});
 
-  const set = (name: string, value: any) => {
-    setForm(p => ({ ...p, [name]: value }));
-    if (bledy[name]) setBledy(p => ({ ...p, [name]: '' }));
+  const set = (name: keyof FormState, value: FormState[keyof FormState]) => {
+    setForm(prev => ({ ...prev, [name]: value }));
+    if (bledy[name]) setBledy(prev => ({ ...prev, [name]: '' }));
     if (submitError) setSubmitError(null);
   };
 
+  const wybranaKategoria = KATEGORIE.find(k => k.id === form.kategoriaId);
+
   const waliduj1 = () => {
     const e: Record<string, string> = {};
-    if (!form.kategoria) e.kategoria = 'Wybierz kategorię.';
+    if (!form.kategoriaId) e.kategoria = 'Wybierz kategorię.';
     if (!form.tytul.trim()) e.tytul = 'Podaj tytuł zgłoszenia.';
     if (form.opis.trim().length < 20) e.opis = 'Opis musi mieć min. 20 znaków.';
     setBledy(e);
@@ -71,7 +83,7 @@ function NoweZgloszenie(): React.JSX.Element {
   const resetForm = () => {
     setKrok(1);
     setForm({
-      kategoria: '',
+      kategoriaId: null,
       tytul: '',
       opis: '',
       dataZdarzenia: '',
@@ -84,8 +96,11 @@ function NoweZgloszenie(): React.JSX.Element {
   };
 
   const handleSubmit = async () => {
-    if (!waliduj1() || !waliduj2()) {
-      setKrok(!waliduj1() ? 1 : 2);
+    const valid1 = waliduj1();
+    const valid2 = waliduj2();
+
+    if (!valid1 || !valid2) {
+      setKrok(!valid1 ? 1 : 2);
       return;
     }
 
@@ -93,22 +108,27 @@ function NoweZgloszenie(): React.JSX.Element {
     setSubmitError(null);
 
     try {
+      const payload = {
+        title: form.tytul.trim(),
+        description: form.opis.trim(),
+        status: 'Oczekujące',
+        category: {
+          id: form.kategoriaId,
+        },
+        accident_date: form.godzinaZdarzenia
+          ? `${form.dataZdarzenia}T${form.godzinaZdarzenia}:00`
+          : `${form.dataZdarzenia}T00:00:00`,
+        location: form.miejsce.trim(),
+        userAnonymous: form.anonimowe,
+      };
+
       const response = await fetch(`${API_BASE_URL}/addReport`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify({
-          id: null,
-          title: form.tytul.trim(),
-          description: `${form.opis.trim()}\n\nMiejsce: ${form.miejsce.trim()}\nData zdarzenia: ${form.dataZdarzenia}${form.godzinaZdarzenia ? ` ${form.godzinaZdarzenia}` : ''}\nAnonimowe: ${form.anonimowe ? 'Tak' : 'Nie'}`,
-          status: null,
-          category: {
-            id: 1,
-            name: form.kategoria,
-          }
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (response.status === 401) {
@@ -176,11 +196,13 @@ function NoweZgloszenie(): React.JSX.Element {
         <div className="nz-section">
           <p className="nz-label-top">Wybierz kategorię zdarzenia *</p>
           <div className="action-cards-container nz-kategorie">
-            {KATEGORIE.map(({ value, icon: Icon }) => (
+            {KATEGORIE.map(({ id, value, icon: Icon }) => (
               <button
-                key={value}
-                className={`action-card nz-kat-card${form.kategoria === value ? ' primary' : ' secondary'}`}
-                onClick={() => set('kategoria', value)}
+                key={id}
+                className={`action-card nz-kat-card${form.kategoriaId === id ? ' primary' : ' secondary'}`}
+                onClick={() => {
+                  set('kategoriaId', id);
+                }}
                 type="button"
               >
                 <Icon size={30} className="nz-kat-icon" />
@@ -289,7 +311,7 @@ function NoweZgloszenie(): React.JSX.Element {
           <div className="action-cards-container nz-podsumowanie-grid">
             <div className="action-card secondary nz-sum-card">
               <span className="nz-sum-label">Kategoria</span>
-              <strong>{form.kategoria}</strong>
+              <strong>{wybranaKategoria?.value || '-'}</strong>
             </div>
             <div className="action-card secondary nz-sum-card">
               <span className="nz-sum-label">Tytuł</span>
@@ -297,7 +319,9 @@ function NoweZgloszenie(): React.JSX.Element {
             </div>
             <div className="action-card secondary nz-sum-card nz-sum-wide">
               <span className="nz-sum-label">Opis zdarzenia</span>
-              <p style={{ margin: 0, textAlign: 'left', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{form.opis}</p>
+              <p style={{ margin: 0, textAlign: 'left', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>
+                {form.opis}
+              </p>
             </div>
             <div className="action-card secondary nz-sum-card">
               <span className="nz-sum-label">Data i czas</span>
@@ -323,9 +347,25 @@ function NoweZgloszenie(): React.JSX.Element {
       )}
 
       <div className="nz-nav">
-        {krok > 1 && <button className="action-card secondary nz-nav-btn" onClick={wstecz}><ChevronLeft size={18} /> Wstecz</button>}
-        {krok < 3 && <button className="action-card primary nz-nav-btn" onClick={dalej}>Dalej <ChevronRight size={18} /></button>}
-        {krok === 3 && <button className="action-card primary nz-nav-btn nz-wyslij" onClick={handleSubmit} disabled={isSubmitting}><CheckCircle size={18} /> {isSubmitting ? 'Wysyłanie...' : 'Wyślij zgłoszenie'}</button>}
+        {krok > 1 && (
+          <button className="action-card secondary nz-nav-btn" onClick={wstecz}>
+            <ChevronLeft size={18} /> Wstecz
+          </button>
+        )}
+        {krok < 3 && (
+          <button className="action-card primary nz-nav-btn" onClick={dalej}>
+            Dalej <ChevronRight size={18} />
+          </button>
+        )}
+        {krok === 3 && (
+          <button
+            className="action-card primary nz-nav-btn nz-wyslij"
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+          >
+            <CheckCircle size={18} /> {isSubmitting ? 'Wysyłanie...' : 'Wyślij zgłoszenie'}
+          </button>
+        )}
       </div>
     </div>
   );

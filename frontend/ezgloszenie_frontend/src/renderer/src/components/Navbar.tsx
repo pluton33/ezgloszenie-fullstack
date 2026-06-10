@@ -1,5 +1,5 @@
 import '../assets/main.css';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import logoUrl from '../assets/policja-logo.svg';
 import {
@@ -21,11 +21,34 @@ function Navbar(): React.JSX.Element {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const profileRef = useRef<HTMLDivElement | null>(null);
 
   const isAuthPage =
     location.pathname === '/login' ||
     location.pathname === '/register' ||
     location.pathname === '/';
+
+  useEffect(() => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    setIsDark(currentTheme === 'dark');
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isDropdownOpen &&
+        profileRef.current &&
+        !profileRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   const toggleTheme = (): void => {
     const next = !isDark;
@@ -34,10 +57,11 @@ function Navbar(): React.JSX.Element {
   };
 
   const toggleDropdown = (): void => {
-    setIsDropdownOpen(!isDropdownOpen);
+    setIsDropdownOpen(prev => !prev);
   };
 
   const handleLogout = (): void => {
+    localStorage.removeItem('userEmail');
     setIsDropdownOpen(false);
     navigate('/login');
   };
@@ -57,13 +81,13 @@ function Navbar(): React.JSX.Element {
 
           {!isAuthPage && (
             <div className='nav-history-controls'>
-              <button className='history-btn' onClick={() => navigate(-1)} title='Cofnij'>
+              <button className='history-btn' onClick={() => navigate(-1)} title='Cofnij' type='button'>
                 <ChevronLeft size={22} />
               </button>
-              <button className='history-btn' onClick={() => navigate(1)} title='Dalej'>
+              <button className='history-btn' onClick={() => navigate(1)} title='Dalej' type='button'>
                 <ChevronRight size={22} />
               </button>
-              <button className='history-btn home-btn' onClick={() => navigate('/home')} title='Strona główna'>
+              <button className='history-btn home-btn' onClick={() => navigate('/home')} title='Strona główna' type='button'>
                 <Home size={18} />
               </button>
             </div>
@@ -72,8 +96,8 @@ function Navbar(): React.JSX.Element {
 
         <div className='topbar-right-section' style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           {!isAuthPage && (
-            <div className='profile-container'>
-              <button className='profile-btn' onClick={toggleDropdown} title='Konto użytkownika'>
+            <div className='profile-container' ref={profileRef}>
+              <button className='profile-btn' onClick={toggleDropdown} title='Konto użytkownika' type='button'>
                 <CircleUserRound size={40} strokeWidth={1.5} />
               </button>
 
@@ -85,19 +109,20 @@ function Navbar(): React.JSX.Element {
                       setIsDropdownOpen(false);
                       navigate('/profil');
                     }}
+                    type='button'
                   >
                     <User size={16} />
                     <span>Mój profil</span>
                   </button>
 
-                  <button className='dropdown-item' onClick={toggleTheme}>
+                  <button className='dropdown-item' onClick={toggleTheme} type='button'>
                     {isDark ? <SunIcon size={16} /> : <MoonIcon size={16} />}
                     <span>{isDark ? 'Tryb jasny' : 'Tryb ciemny'}</span>
                   </button>
 
                   <hr className='dropdown-divider' />
 
-                  <button className='dropdown-item logout' onClick={handleLogout}>
+                  <button className='dropdown-item logout' onClick={handleLogout} type='button'>
                     <LogOut size={16} />
                     <span>Wyloguj się</span>
                   </button>
@@ -107,13 +132,13 @@ function Navbar(): React.JSX.Element {
           )}
 
           <div className='window-controls'>
-            <button id='minimize-btn' onClick={minimizeWindow} className='min-btn'>
+            <button id='minimize-btn' onClick={minimizeWindow} className='min-btn' type='button'>
               <Minus size={18} />
             </button>
-            <button id='maximize-btn' onClick={maximizeWindow} className='max-btn'>
+            <button id='maximize-btn' onClick={maximizeWindow} className='max-btn' type='button'>
               <Square className='-textbtnsquare' size={14} />
             </button>
-            <button id='close-btn' onClick={closeWindow} className='close-btn'>
+            <button id='close-btn' onClick={closeWindow} className='close-btn' type='button'>
               <X size={18} />
             </button>
           </div>

@@ -1,5 +1,16 @@
 @import './base.css';
 
+html,
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
 .topbar {
   display: flex;
   flex-direction: row;
@@ -60,7 +71,7 @@
   padding-left: 20px;
   border-left: 1px solid rgba(255, 255, 255, 0.2);
   height: 40px;
-  -webkit-app-region: no-drag; 
+  -webkit-app-region: no-drag;
 }
 
 .history-btn {
@@ -104,7 +115,7 @@
 }
 
 .profile-btn:hover {
-  color: #cccccc; 
+  color: #cccccc;
   transform: scale(1.08);
 }
 
@@ -137,15 +148,16 @@
   position: absolute;
   top: 55px;
   right: 15px;
-  background-color: white;
-  min-width: 170px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
+  background-color: var(--surface-card);
+  min-width: 190px;
+  box-shadow: var(--shadow-card);
+  border-radius: 10px;
   padding: 6px 0;
   display: flex;
   flex-direction: column;
   z-index: 9999;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
+  animation: dropdownFadeIn 0.18s ease;
 }
 
 .dropdown-item {
@@ -159,30 +171,41 @@
   text-align: left;
   font-family: 'Saira', sans-serif;
   font-size: 0.95rem;
-  color: #374151;
+  color: var(--text-primary);
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: var(--theme-transition), background-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
 }
 
-
 .dropdown-item:hover {
-  background-color: #f3f4f6;
-  color: #002354;
+  background-color: var(--surface-soft);
+  color: var(--primary-color);
 }
 
 .dropdown-divider {
   border: none;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border-soft);
   margin: 6px 0;
 }
 
 .dropdown-item.logout {
-  color: #dc2626;
+  color: var(--danger-border);
 }
 
 .dropdown-item.logout:hover {
-  background-color: #fef2f2;
-  color: #b91c1c;
+  background-color: var(--danger-bg);
+  color: var(--danger-text);
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .buttonzaruwka {
