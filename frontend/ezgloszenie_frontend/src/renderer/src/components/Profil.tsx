@@ -13,7 +13,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import '../assets/profil.css';
 
-const API_BASE_URL = '/api';
+import { API_BASE_URL } from '../config/api';
 
 interface UserData {
     id?: number;

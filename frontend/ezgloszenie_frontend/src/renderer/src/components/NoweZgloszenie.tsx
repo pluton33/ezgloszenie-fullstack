@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import '../assets/nowezgloszenie.css';
 
-const API_BASE_URL = '/api';
+import { API_BASE_URL } from '../config/api';
 
 const KATEGORIE = [
   { id: 1, value: 'Kradzież / Rozbój', icon: LockKeyhole },

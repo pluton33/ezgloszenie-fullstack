@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import '../assets/mojezgloszenia.css';
 
-const API_BASE_URL = '/api';
+import { API_BASE_URL } from '../config/api';
 
 export interface UserData {
   id?: number;
